@@ -9,3 +9,5 @@ database.trace.db
 .settings/org.eclipse.jdt.core.prefs
 .settings/org.eclipse.m2e.core.prefs
 .classpath
+.factorypath
+src/main/resources/templates/images/background.jpg
