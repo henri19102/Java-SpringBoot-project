@@ -1,4 +1,4 @@
-package projekti;
+package projekti.Models;
 
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -10,6 +10,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile extends AbstractPersistable<Long> {
-    String name;
+public class Account extends AbstractPersistable<Long> {
+
+    private String username;
+    private String password;
+
 }
