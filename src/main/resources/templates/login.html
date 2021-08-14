@@ -19,6 +19,10 @@
 
             <p></p>
 
+            <div th:if="${success}" class="alert alert-success" role="alert" >
+                User logget out succesfully!
+            </div>
+
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
@@ -29,21 +33,28 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
 
-                            <form>
+                            <form method="POST" th:action="@{/login}" >
+                                <div th:replace="fragments/alerts :: error"></div>
+
+                                <div th:if="${param.success}" class="alert alert-success" role="alert" >
+                                    User logged in!
+                                </div>
+
+
 
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Username</span>
-                                    <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                                    <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username"
                                            aria-describedby="basic-addon1">
                                 </div>
 
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Password</span>
-                                    <input type="text" class="form-control" placeholder="Password" aria-label="Username"
+                                    <input type="text" class="form-control" name="password" placeholder="Password" aria-label="Username"
                                            aria-describedby="basic-addon1">
                                 </div>
 
-                                <button type="button" class="btn btn-primary">Log in</button>
+                                <button type="submit" class="btn btn-primary">Log in</button>
                             </form>
 
                         </div>
@@ -58,7 +69,7 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <form method="POST" th:action="@{/accounts}" >
+                            <form method="POST" th:action="@{/signup}" >
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Username</span>
                                     <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username"

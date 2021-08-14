@@ -28,26 +28,22 @@ public class AccountController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @GetMapping("/accounts")
-    public String list(Model model) {
-        model.addAttribute("accounts", accountRepository.findAll());
-        return "accounts";
-    }
-
-    @PostMapping("/accounts")
-    public String add(@RequestParam String username, @RequestParam String password) {
+    @PostMapping("/signup")
+    public String signup(@RequestParam String username, @RequestParam String password) {
         if (accountRepository.findByUsername(username) != null) {
-            return "redirect:/accounts";
+            return "redirect:/index";
         }
 
         Account a = new Account(username, passwordEncoder.encode(password));
         accountRepository.save(a);
-        return "redirect:/accounts";
+        return "redirect:/index";
     }
 
     @GetMapping("/login")
-    public String logInOrSignUp() {
-        return "signup";
+    public String logIn() {
+        return "login";
     }
+
+
 
 }

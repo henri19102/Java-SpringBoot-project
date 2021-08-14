@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -19,16 +20,16 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
     private CustomUserDetailsService userDetailsService;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // mahdollistetaan h2-konsolin käyttö
-        http.csrf().disable();
-        http.headers().frameOptions().sameOrigin();
-
-        http.authorizeRequests()
-                .antMatchers("/h2-console", "/h2-console/**").permitAll()
-                .anyRequest().authenticated();
-        http.formLogin()
-                .permitAll();
+    public void configure(HttpSecurity http) throws Exception {
+    http
+            .authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .loginPage("/login")
+            .permitAll()
+            .and()
+            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
     }
 
     @Autowired
