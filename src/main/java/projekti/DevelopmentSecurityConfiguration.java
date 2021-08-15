@@ -22,8 +22,12 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     public void configure(HttpSecurity http) throws Exception {
     http
-            .authorizeRequests()
-            .anyRequest().authenticated()
+            .csrf().disable()
+            .headers().frameOptions().sameOrigin();
+            
+            http.authorizeRequests()
+            .antMatchers("/h2-console", "/h2-console/**").permitAll()
+            .anyRequest().permitAll()
             .and()
             .formLogin()
             .loginPage("/login")

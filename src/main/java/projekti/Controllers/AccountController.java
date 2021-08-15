@@ -31,12 +31,12 @@ public class AccountController {
     @PostMapping("/signup")
     public String signup(@RequestParam String username, @RequestParam String password) {
         if (accountRepository.findByUsername(username) != null) {
-            return "redirect:/index";
+            return "redirect:/login";
         }
 
         Account a = new Account(username, passwordEncoder.encode(password));
         accountRepository.save(a);
-        return "redirect:/index";
+        return "redirect:/login";
     }
 
     @GetMapping("/login")

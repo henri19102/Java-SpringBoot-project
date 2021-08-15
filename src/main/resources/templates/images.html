@@ -12,19 +12,18 @@
         <div class="container">
             <div th:replace="fragments/navbar :: navbar"></div>
 
-            <form th:action="@{/users/save}"
-                  th:object="${user}" method="post"
-                  enctype="multipart/form-data"
-                  >
-                ...
-                <div>
+            <div th:if="${isUserLoggedIn == true}" >
+                <form method="POST" th:action="@{/images/{accountId}(accountId=${userId})}" enctype="multipart/form-data">
+                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/>
+                    <input type="submit" value="Add!"/>
+                </form>
+            </div>
 
-                    <label>Photos: </label>
-                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" />
-
-                </div>
-                ...
-            </form>
+            <div th:each="image : ${images}" >
+                <p th:text="${image.id}" ></p>
+                <img th:src="@{/images/{id}/content(id=${image.id})}"/>
+            </div>
+<p th:text="${userId}" >joku</p>
         </div>
 
 
