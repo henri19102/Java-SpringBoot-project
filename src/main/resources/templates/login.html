@@ -70,15 +70,35 @@
                     <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <form method="POST" th:action="@{/signup}" >
+                                
+                                
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Username</span>
                                     <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username"
                                            aria-describedby="basic-addon1">
                                 </div>
+                                
+                                                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Firstname</span>
+                                    <input type="text" class="form-control" name="firstName" placeholder="Firstname" aria-label="Firstname"
+                                           aria-describedby="basic-addon1">
+                                </div>
+                                
+                                                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Lastname</span>
+                                    <input type="text" class="form-control" name="lastName" placeholder="Lastname" aria-label="Lastname"
+                                           aria-describedby="basic-addon1">
+                                </div>
+                                
+                                                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Profile page name</span>
+                                    <input type="text" class="form-control" name="profilePageName" placeholder="ProfilePage" aria-label="ProfilePage"
+                                           aria-describedby="basic-addon1">
+                                </div>
 
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Password</span>
-                                    <input type="text" class="form-control" name="password" placeholder="Password" aria-label="Username"
+                                    <input type="text" class="form-control" name="password" placeholder="Password" aria-label="Password"
                                            aria-describedby="basic-addon1">
                                 </div>
 

@@ -10,26 +10,30 @@
         <div th:fragment="navbar" >
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Frontpage</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">Frontpage</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Log in</a>
+                    <a class="nav-link" th:href="@{/login}" >Log in</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Sign up</a>
+                    <a class="nav-link" th:href="@{/login}" >Sign up</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My profile</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">My page</a></li>
+                        <li><a class="dropdown-item" th:href="@{/images}" >images</a></li>
+    
+
                         <li><a class="dropdown-item" href="#">Edit profile</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                        <li>
+                            <form class="form-inline" form-method="post" th:action="@{/logout}" >
+                                <button class="btn" type="submit" >logout</button>
+                            </form>
+                        </li>
                     </ul>
                 </li>
-                <form class="form-inline" form-method="post" th:action="@{/logout}" >
-                    <button class="btn" type="submit" >logout</button>
-                </form>
+
             </ul>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>

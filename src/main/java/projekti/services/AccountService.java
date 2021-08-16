@@ -18,7 +18,6 @@ public class AccountService {
 
     public Long getLoggedInUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         Account loggedInUser = accountRepo.findByUsername(auth.getName());
         return loggedInUser.getId();
     }
@@ -31,4 +30,12 @@ public class AccountService {
         return true;
 
     }
+
+  
+//    public String getProfilePageName() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        Account loggedInUser = accountRepo.findByUsername(auth.getName());
+//        return loggedInUser.getProfilePageName();
+//    }
+ 
 }

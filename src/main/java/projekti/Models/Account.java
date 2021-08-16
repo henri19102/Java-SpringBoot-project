@@ -21,14 +21,21 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Account extends AbstractPersistable<Long> {
 
     private String username;
+    private String firstName;
+    private String lastName;
     private String password;
+    private String profilePageName;
     
     @OneToMany(mappedBy = "account")
     private List<Image> images = new ArrayList<>();
     
-    public Account(String username, String password){
+    public Account(String username, String password, 
+            String firstName, String lastName, String profilePageName){
         this.username=username;
         this.password=password;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.profilePageName=profilePageName;
     }
     
 }
