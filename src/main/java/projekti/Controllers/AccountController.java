@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import projekti.Models.Account;
 import projekti.JpaRepositories.AccountRepository;
-import projekti.JpaRepositories.ImageRepo;
 import projekti.Models.Image;
 import projekti.services.AccountService;
+import projekti.JpaRepositories.ImageRepository;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AccountController {
 
 
     @Autowired
-    ImageRepo imgRepo;
+    ImageRepository imgRepo;
 
     @Autowired
     PasswordEncoder passwordEncoder;

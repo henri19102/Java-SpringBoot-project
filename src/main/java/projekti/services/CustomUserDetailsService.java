@@ -1,4 +1,4 @@
-package projekti;
+package projekti.services;
 
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import projekti.JpaRepositories.AccountRepository;
-import projekti.JpaRepositories.ImageRepo;
 import projekti.Models.Account;
 import projekti.Models.Image;
 import projekti.services.AccountService;
+import projekti.JpaRepositories.ImageRepository;
 
 @Controller
 public class ImageController {
 
     @Autowired
-    private ImageRepo imageRepo;
+    private ImageRepository imageRepo;
 
     @Autowired
     private AccountRepository accountRepo;
