@@ -14,38 +14,26 @@
 
 
             <!-- Dropdown --> 
-            <select id='selUser' style='width: 200px;'>
-                 <option th:each="user : ${users}"
-                    th:text="${user.username}"
-                    th:value="${user.id}">
-            </select>
 
-            <input type='button' value='Seleted option' id='but_read'>
+            <datalist id="users" >
+                <option th:each="user : ${users}"
+                        th:value="${user.username}"
+                        th:text="${user.firstName + ' ' + user.lastName}">
+                    >
+            </datalist>
+            <input type="text" list="users" >
 
-                <br/>
-                <div id='result'></div>
+
+
+
+
         </div>
 
 
 
+        <script th:src="@{/scripts/scripts.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
 
-            $(document).ready(function(){
-
-            // Initialize select2
-            $("#selUser").select2();
-
-            // Read selected option
-            $('#but_read').click(function(){
-            var username = $('#selUser option:selected').text();
-            var userid = $('#selUser').val();
-
-            $('#result').html("id : " + userid + ", name : " + username);
-
-            });
-            });
-        </script>
     </body>
 </html>
