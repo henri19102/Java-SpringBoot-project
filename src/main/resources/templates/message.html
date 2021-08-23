@@ -12,30 +12,21 @@
         <div class="container">
             <div th:replace="fragments/navbar :: navbar "></div>
 
-            <datalist id="users" >
-                <option th:each="user : ${users}"
-                        th:text="${user.firstName + ' ' + user.lastName }"
-                        th:value="${user.username}"
 
-                        >
-                    >
-            </datalist>
 
-            <form th:action="@{/users/{username}/follow (username=${user.username}) }" method="POST">
-                <input  type="text" list="users" name="name" />
-                <input type="submit"  value="moi" />          
+            <form th:action="@{/{username}/message (username=${user.username}) }" method="POST">
+                <input  type="text"  name="messagetext" />
+                <input type="submit"  value="add message" />          
             </form>
+
+            <p th:each="msg : ${messages}"
+               th:text="${msg.text}"
+
+               >
 
 
         </div>
 
-
-
-        <script>
-            function myFunction() {
-            document.getElementById("demo").innerHTML = document.getElementById("joku").value;
-            }
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

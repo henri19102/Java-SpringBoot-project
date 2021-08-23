@@ -32,6 +32,8 @@ public class Account implements Serializable {
 
     @OneToMany(mappedBy = "account")
     private List<Message> messages;
+    @OneToMany(mappedBy = "follower")
+    private List<FollowUser> followUsers;
 
     public Account(String username, String password,
             String firstName, String lastName, String profilePageName) {

@@ -5,6 +5,7 @@
  */
 package projekti.Controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import projekti.Models.Account;
 import projekti.JpaRepositories.AccountRepository;
+import projekti.JpaRepositories.FollowUserRepository;
 import projekti.Models.Image;
 import projekti.services.AccountService;
 import projekti.JpaRepositories.ImageRepository;
+import projekti.Models.FollowUser;
 
 /**
  *
@@ -30,7 +33,8 @@ public class AccountController {
     @Autowired
     AccountRepository accountRepository;
 
-
+    @Autowired
+    FollowUserRepository followRepo;
 
     @Autowired
     ImageRepository imgRepo;
@@ -56,11 +60,15 @@ public class AccountController {
     public String logIn() {
         return "login";
     }
-    
-        @GetMapping("/users")
-    public String users(Model model) {
+
+
+
+    @GetMapping("/user/{username}")
+    public String users2(Model model, @PathVariable String username) {
         List<Account> all = accountRepository.findAll();
+        Account user = accountRepository.findByUsername(username);
         model.addAttribute("users", all);
+        model.addAttribute("user", user);
         return "users";
     }
 
@@ -69,10 +77,20 @@ public class AccountController {
         Account account = accountRepository.findByProfilePageName(profilePageName);
         List<Image> usersImages = imgRepo.findByAccountId(account.getId());
         model.addAttribute("account", account);
-        
+
         model.addAttribute("images", usersImages);
 
         return "profilepage";
+    }
+
+    @PostMapping("/users/{username}/follow")
+    public String post(@RequestParam String name, @PathVariable String username) {
+        Account followed = accountRepository.findByUsername(name);
+        Account follower = accountRepository.findByUsername(username);
+        FollowUser user = new FollowUser(follower, followed, LocalDateTime.now());
+        followRepo.save(user);
+
+        return "redirect:/users";
     }
 
 }
