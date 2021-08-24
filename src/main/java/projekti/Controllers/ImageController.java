@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import projekti.JpaRepositories.AccountRepository;
+import projekti.JpaRepositories.CommentRepository;
 import projekti.Models.Account;
 import projekti.Models.Image;
 import projekti.services.AccountService;
 import projekti.JpaRepositories.ImageRepository;
+import projekti.Models.Comment;
 
 @Controller
 public class ImageController {
@@ -35,6 +37,9 @@ public class ImageController {
     private AccountRepository accountRepo;
 
     @Autowired
+    private CommentRepository commentRepo;
+
+    @Autowired
     private AccountService accountService;
 
     @GetMapping("/images")
@@ -43,6 +48,26 @@ public class ImageController {
         model.addAttribute("userId", accountService.getLoggedInUserId());
         model.addAttribute("isUserLoggedIn", accountService.isUserLoggedIn());
         return "images";
+    }
+
+    @GetMapping("/{username}/images")
+    public String album(Model model, @PathVariable String username) {
+        Account user = accountRepo.findByUsername(username);
+        model.addAttribute("images", imageRepo.findByAccountId(user.getId()));
+        model.addAttribute("username", username);
+        model.addAttribute("isUserLoggedIn", accountService.isUserLoggedIn());
+        return "images";
+    }
+
+    @GetMapping("/{username}/images/{id}")
+    public String image(Model model, @PathVariable String username, @PathVariable Long id) {
+        Account user = accountRepo.findByUsername(username);
+        Image img = imageRepo.getOne(id);
+        model.addAttribute("image", img);
+        model.addAttribute("username", username);
+        model.addAttribute("comments", img.getComments());
+
+        return "image";
     }
 
     @GetMapping("/images/{id}")
@@ -57,23 +82,40 @@ public class ImageController {
         return new ResponseEntity<>(img.getContent(), headers, HttpStatus.CREATED);
     }
 
-    @PostMapping("/images/{accountId}")
-    public String save(@RequestParam("image") MultipartFile file, @PathVariable Long accountId) throws IOException {
+    @PostMapping("/{username}/images")
+    public String save(@RequestParam("image") MultipartFile file, @PathVariable String username, @RequestParam String imagetext) throws IOException {
         Image img = new Image();
 
-        Account account = accountRepo.getOne(accountId);
+        Account account = accountRepo.findByUsername(username);
 
         img.setAccount(account);
         img.setName(file.getOriginalFilename());
         img.setContentType(file.getContentType());
         img.setContentLength(file.getSize());
         img.setContent(file.getBytes());
+        img.setText(imagetext);
 
         imageRepo.save(img);
 
         //  account.getImages().add(img);
         //  accountRepo.save(account);
-        return "redirect:/images";
+        return "redirect:/{username}/images";
+    }
+
+    @PostMapping("/{username}/images/{id}/comment")
+    public String comment(@PathVariable String username, @PathVariable Long id, @RequestParam String comment) {
+
+        Account account = accountRepo.findByUsername(username);
+        Image image = imageRepo.getOne(id);
+        
+        Comment com = new Comment();
+        com.setAccount(account);
+        com.setText(comment);
+        commentRepo.save(com);
+        image.getComments().add(com);
+        imageRepo.save(image);
+
+        return "redirect:/{username}/images";
     }
 
     @GetMapping(path = "/images/{id}/content", produces = "image/jpg")

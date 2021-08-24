@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projekti.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,8 +32,15 @@ public class Image implements Serializable {
     private String name;
     private String contentType;
     private Long contentLength;
+    private String text;
 
     private boolean isProfilePic;
+
+    @ManyToMany
+    private List<Account> likes = new ArrayList<>();
+
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
 
     @Lob
     @Basic(fetch = FetchType.LAZY)

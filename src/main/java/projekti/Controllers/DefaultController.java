@@ -23,8 +23,8 @@ public class DefaultController {
     @GetMapping("*")
     public String helloWorld(Model model) {
         model.addAttribute("message", "World!");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("auth",  serv.getLoggedInUserId());
+        Long id = serv.getLoggedInUserId();
+        model.addAttribute("auth",  id);
         return "index";
     }
 }

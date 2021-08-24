@@ -13,21 +13,36 @@
             <div th:replace="fragments/navbar :: navbar"></div>
 
             <div th:if="${isUserLoggedIn == true}" >
-                <form method="POST" th:action="@{/images/{accountId}(accountId=${userId})}" enctype="multipart/form-data">
-                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/>
-                    <input type="submit" value="Add!"/>
-                </form>
-            </div>
+                <form method="POST" th:action="@{/{username}/images(username=${username})}" enctype="multipart/form-data">
+                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/><br>
+                        <input  type="text"  name="imagetext" /><br>
+                            <input type="submit" value="Add!"/>
+                            </form>
+                            </div>
+                            <!--
+                                        <div th:each="image : ${images}" >
+                                            <p th:text="${image.id}" ></p>
+                                            <img th:src="@{/images/{id}/content(id=${image.id})}"/>
+                                        </div>
+                                        <p th:text="${userId}" >joku</p>
+                                    </div>-->
 
-            <div th:each="image : ${images}" >
-                <p th:text="${image.id}" ></p>
-                <img th:src="@{/images/{id}/content(id=${image.id})}"/>
-            </div>
-<p th:text="${userId}" >joku</p>
-        </div>
+                            <div class="row">
+                                <div class="col-md-4" th:each="image : ${images}" style="background-color: blanchedalmond; border: solid black" >
+                                    <div class="thumbnail">
+                                        <a th:href="@{/{username}/images/{id} (username=${username}, id=${image.id})}">
+                                            <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
+                                                <div class="caption">
+                                                    <p th:text="${image.text}" >Lorem ipsum...</p>
+                                                </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
 
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-    </body>
-</html>
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+                            </body>
+                            </html>
