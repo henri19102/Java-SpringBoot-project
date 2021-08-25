@@ -31,13 +31,13 @@
                     </div>
                 </div>
                 <div class="col-md-4"  style="background-color: blanchedalmond; border: solid black"  >
-                    <form th:action="@{/{username}/images/{id}/comment (username=${username}, id=${image.id}}) }" method="POST">
+                    <form th:if="${loggedIn == true}" th:action="@{/{username}/images/{id}/comment (username=${username}, id=${image.id})}" method="POST">
                         <input  type="text"  name="comment" />
                         <input type="submit"  value="add comment" />          
                     </form>
                     
                                <p th:each="com : ${comments}"
-               th:text="${com.text}"
+               th:text="${com.text}+' '+${com.account.username}"
 
                >
                 </div>

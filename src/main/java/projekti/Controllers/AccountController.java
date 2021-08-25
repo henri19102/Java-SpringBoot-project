@@ -32,6 +32,9 @@ public class AccountController {
 
     @Autowired
     AccountRepository accountRepository;
+    
+    @Autowired
+    AccountService accServ;
 
     @Autowired
     FollowUserRepository followRepo;
@@ -61,8 +64,6 @@ public class AccountController {
         return "login";
     }
 
-
-
     @GetMapping("/user/{username}")
     public String users2(Model model, @PathVariable String username) {
         List<Account> all = accountRepository.findAll();
@@ -70,6 +71,15 @@ public class AccountController {
         model.addAttribute("users", all);
         model.addAttribute("user", user);
         return "users";
+    }
+
+    @GetMapping("/user/followed")
+    public String users3(Model model) {
+        Long id = accServ.getLoggedInUserId();
+        List<FollowUser> all = followRepo.findAllByFollowerId(id);
+
+        model.addAttribute("users", all);
+        return "followed";
     }
 
     @GetMapping("/users/{profilePageName}")

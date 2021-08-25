@@ -12,19 +12,18 @@
         <div class="container">
             <div th:replace="fragments/navbar :: navbar "></div>
 
-            <datalist id="users" >
-                <option th:each="user : ${users}"
-                        th:text="${user.firstName + ' ' + user.lastName }"
-                        th:value="${user.username}"
 
-                        >
-                    >
-            </datalist>
 
-            <form th:action="@{/users/{username}/follow (username=${user.username}) }" method="POST">
-                <input  type="text" list="users" name="name" />
-                <input type="submit"  value="follow" />          
+            <form th:action="@{/{username}/message (username=${username}) }" method="POST">
+                <input  type="text"  name="messagetext" />
+                <input type="submit"  value="add message" />          
             </form>
+
+            <div th:each="msg : ${messages}" >
+                <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}">
+                    <p  th:text="${msg.text}">
+                </a>
+            </div>
 
 
         </div>

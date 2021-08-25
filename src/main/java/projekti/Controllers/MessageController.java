@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import projekti.JpaRepositories.AccountRepository;
+import projekti.JpaRepositories.CommentRepository;
 import projekti.JpaRepositories.MessageRepository;
 import projekti.Models.Account;
+import projekti.Models.Comment;
 import projekti.Models.Message;
+import projekti.services.AccountService;
 
 /**
  *
@@ -32,14 +35,47 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepo;
 
+    @Autowired
+    private CommentRepository commentRepo;
+
+    @Autowired
+    private AccountService accServ;
+
     @GetMapping("/{username}/messages")
-    public String message(Model model, @PathVariable String username) {
+    public String messages(Model model, @PathVariable String username) {
         Account user = userRepo.findByUsername(username);
         List<Message> all = messageRepo.findAll();
-        model.addAttribute("user", user);
+        model.addAttribute("username", username);
         model.addAttribute("messages", all);
 
+        return "messages";
+    }
+
+    @GetMapping("/{username}/messages/{id}")
+    public String message(Model model, @PathVariable String username, @PathVariable Long id) {
+        Account user = userRepo.findByUsername(username);
+        Message msg = messageRepo.getOne(id);
+        model.addAttribute("username", username);
+        model.addAttribute("msg", msg);
+        model.addAttribute("auth", accServ.isUserLoggedIn());
+        model.addAttribute("comments", msg.getComments());
         return "message";
+    }
+
+    @PostMapping("/{username}/messages/{id}/comment")
+    public String comment(@PathVariable String username, @PathVariable Long id, @RequestParam String comment) {
+
+        Account account = accServ.getAccount();
+        Message msg = messageRepo.getOne(id);
+
+        Comment com = new Comment();
+        com.setAccount(account);
+        com.setText(comment);
+        commentRepo.save(com);
+        msg.getComments().add(com);
+        messageRepo.save(msg);
+
+        return "redirect:/{username}/messages/{id}";
     }
 
     @PostMapping("/{username}/message")

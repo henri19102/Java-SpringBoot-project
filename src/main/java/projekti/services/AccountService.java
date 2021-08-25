@@ -22,6 +22,12 @@ public class AccountService {
         return loggedInUser.getId();
     }
 
+    public Account getAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account loggedInUser = accountRepo.findByUsername(auth.getName());
+        return loggedInUser;
+    }
+
     public boolean isUserLoggedIn() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (accountRepo.findByUsername(auth.getName()) == null) {
@@ -31,11 +37,9 @@ public class AccountService {
 
     }
 
-  
 //    public String getProfilePageName() {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        Account loggedInUser = accountRepo.findByUsername(auth.getName());
 //        return loggedInUser.getProfilePageName();
 //    }
- 
 }

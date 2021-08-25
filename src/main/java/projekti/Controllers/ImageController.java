@@ -66,6 +66,7 @@ public class ImageController {
         model.addAttribute("image", img);
         model.addAttribute("username", username);
         model.addAttribute("comments", img.getComments());
+        model.addAttribute("loggedIn", accountService.isUserLoggedIn());
 
         return "image";
     }
@@ -105,7 +106,7 @@ public class ImageController {
     @PostMapping("/{username}/images/{id}/comment")
     public String comment(@PathVariable String username, @PathVariable Long id, @RequestParam String comment) {
 
-        Account account = accountRepo.findByUsername(username);
+        Account account = accountService.getAccount();
         Image image = imageRepo.getOne(id);
         
         Comment com = new Comment();
@@ -115,7 +116,7 @@ public class ImageController {
         image.getComments().add(com);
         imageRepo.save(image);
 
-        return "redirect:/{username}/images";
+        return "redirect:/{username}/images/{id}";
     }
 
     @GetMapping(path = "/images/{id}/content", produces = "image/jpg")
