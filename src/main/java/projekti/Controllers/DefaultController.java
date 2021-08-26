@@ -22,9 +22,6 @@ public class DefaultController {
 
     @GetMapping("*")
     public String helloWorld(Model model) {
-        model.addAttribute("message", "World!");
-        Long id = serv.getLoggedInUserId();
-        model.addAttribute("auth",  id);
         return "index";
     }
 }

@@ -63,6 +63,7 @@ public class ImageController {
     public String image(Model model, @PathVariable String username, @PathVariable Long id) {
         Account user = accountRepo.findByUsername(username);
         Image img = imageRepo.getOne(id);
+        
         model.addAttribute("image", img);
         model.addAttribute("username", username);
         model.addAttribute("comments", img.getComments());
@@ -108,7 +109,7 @@ public class ImageController {
 
         Account account = accountService.getAccount();
         Image image = imageRepo.getOne(id);
-        
+
         Comment com = new Comment();
         com.setAccount(account);
         com.setText(comment);
@@ -117,6 +118,16 @@ public class ImageController {
         imageRepo.save(image);
 
         return "redirect:/{username}/images/{id}";
+    }
+
+    @PostMapping("/{username}/images/{id}/profile-picture")
+    public String profilepic(@PathVariable String username, @PathVariable Long id, @RequestParam String profilepic) {
+
+        Image image = imageRepo.getOne(id);
+        image.setProfilePic(true);
+        imageRepo.save(image);
+
+        return "redirect:/{username}/images";
     }
 
     @GetMapping(path = "/images/{id}/content", produces = "image/jpg")

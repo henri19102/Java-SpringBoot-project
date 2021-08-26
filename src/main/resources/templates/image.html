@@ -27,6 +27,8 @@
                         <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
                             <div class="caption">
                                 <p th:text="${image.text}" >Lorem ipsum...</p>
+     
+
                             </div>
                     </div>
                 </div>
@@ -35,11 +37,11 @@
                         <input  type="text"  name="comment" />
                         <input type="submit"  value="add comment" />          
                     </form>
-                    
-                               <p th:each="com : ${comments}"
-               th:text="${com.text}+' '+${com.account.username}"
 
-               >
+                    <p th:each="com : ${comments}"
+                       th:text="${com.text}+' '+${com.account.username}"
+
+                       >
                 </div>
 
             </div>

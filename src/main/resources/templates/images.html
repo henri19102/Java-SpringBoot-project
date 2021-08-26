@@ -5,44 +5,55 @@
         <title>Hello world</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" >
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+                </head>
+                <body style="background-color: #eee;" >
 
-    </head>
-    <body style="background-color: #eee;" >
+                    <div class="container">
+                        <div th:replace="fragments/navbar :: navbar"></div>
 
-        <div class="container">
-            <div th:replace="fragments/navbar :: navbar"></div>
-
-            <div th:if="${isUserLoggedIn == true}" >
-                <form method="POST" th:action="@{/{username}/images(username=${username})}" enctype="multipart/form-data">
-                    <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/><br>
-                        <input  type="text"  name="imagetext" /><br>
-                            <input type="submit" value="Add!"/>
-                            </form>
-                            </div>
-                            <!--
-                                        <div th:each="image : ${images}" >
-                                            <p th:text="${image.id}" ></p>
-                                            <img th:src="@{/images/{id}/content(id=${image.id})}"/>
+                        <div th:if="${isUserLoggedIn == true}" >
+                            <form method="POST" th:action="@{/{username}/images(username=${username})}" enctype="multipart/form-data">
+                                <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/><br>
+                                    <input  type="text"  name="imagetext" /><br>
+                                        <input type="submit" value="Add!"/>
+                                        </form>
                                         </div>
-                                        <p th:text="${userId}" >joku</p>
-                                    </div>-->
+                                        <!--
+                                                    <div th:each="image : ${images}" >
+                                                        <p th:text="${image.id}" ></p>
+                                                        <img th:src="@{/images/{id}/content(id=${image.id})}"/>
+                                                    </div>
+                                                    <p th:text="${userId}" >joku</p>
+                                                </div>-->
 
-                            <div class="row">
-                                <div class="col-md-4" th:each="image : ${images}" style="background-color: blanchedalmond; border: solid black" >
-                                    <div class="thumbnail">
-                                        <a th:href="@{/{username}/images/{id} (username=${username}, id=${image.id})}">
-                                            <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
-                                                <div class="caption">
-                                                    <p th:text="${image.text}" >Lorem ipsum...</p>
+                                        <div class="row">
+                                            <div class="col-md-4" th:each="image : ${images}" style="background-color: blanchedalmond; border: solid black" >
+                                                <div class="thumbnail">
+                                                    <a th:href="@{/{username}/images/{id} (username=${username}, id=${image.id})}">
+                                                        <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
+                                                            <div class="caption">
+                                                                <p th:text="${image.text}" >Lorem ipsum...</p>
+                                                            </div>
+                                                    </a>
+                                                    <button class="btn btn-primary" >
+                                                        <i class="bi bi-hand-thumbs-up"></i>
+                                                        Like
+                                                    </button>
+                                                    <form th:if="${isUserLoggedIn == true}" th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}" method="POST">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1" th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'"  >
+                                                          <input type="submit"  value="select profile picture" /> 
+                                                            
+                                                    </div>
+                                                    </form>
                                                 </div>
-                                        </a>
-                                    </div>
-                                </div>
+                                            </div>
 
-                            </div>
+                                        </div>
 
 
 
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-                            </body>
-                            </html>
+                                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+                                        </body>
+                                        </html>

@@ -34,7 +34,7 @@ public class Image implements Serializable {
     private Long contentLength;
     private String text;
 
-    private boolean isProfilePic;
+    private boolean profilePic;
 
     @ManyToMany
     private List<Account> likes = new ArrayList<>();

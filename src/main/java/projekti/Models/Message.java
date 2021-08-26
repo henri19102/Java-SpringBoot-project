@@ -25,6 +25,7 @@ public class Message implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String text;
+    
     private LocalDateTime sendTime;
 
     @ManyToMany

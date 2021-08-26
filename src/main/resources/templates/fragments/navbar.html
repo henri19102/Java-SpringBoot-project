@@ -22,7 +22,7 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My profile</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/images}" >images</a></li>
-    
+
 
                         <li><a class="dropdown-item" href="#">Edit profile</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -30,6 +30,19 @@
                             <form class="form-inline" form-method="post" th:action="@{/logout}" >
                                 <button class="btn" type="submit" >logout</button>
                             </form>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followed friends</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"  >kari</a></li>
+
+
+                        <li><a class="dropdown-item" href="#">pekka</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">harri</a>
                         </li>
                     </ul>
                 </li>

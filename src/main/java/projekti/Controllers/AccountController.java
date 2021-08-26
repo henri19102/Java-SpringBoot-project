@@ -21,7 +21,10 @@ import projekti.JpaRepositories.FollowUserRepository;
 import projekti.Models.Image;
 import projekti.services.AccountService;
 import projekti.JpaRepositories.ImageRepository;
+import projekti.JpaRepositories.MessageRepository;
 import projekti.Models.FollowUser;
+import projekti.Models.Message;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -32,7 +35,7 @@ public class AccountController {
 
     @Autowired
     AccountRepository accountRepository;
-    
+
     @Autowired
     AccountService accServ;
 
@@ -41,6 +44,9 @@ public class AccountController {
 
     @Autowired
     ImageRepository imgRepo;
+
+    @Autowired
+    MessageRepository msgRepo;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -82,13 +88,15 @@ public class AccountController {
         return "followed";
     }
 
-    @GetMapping("/users/{profilePageName}")
+    @GetMapping("/{profilePageName}")
     public String profilePage(Model model, @PathVariable String profilePageName) {
         Account account = accountRepository.findByProfilePageName(profilePageName);
         List<Image> usersImages = imgRepo.findByAccountId(account.getId());
+        List<Message> messages = msgRepo.findAllByAccountId(account.getId());
+ 
         model.addAttribute("account", account);
-
-        model.addAttribute("images", usersImages);
+        model.addAttribute("messages", messages);
+        model.addAttribute("image", usersImages.get(0));
 
         return "profilepage";
     }
@@ -96,11 +104,14 @@ public class AccountController {
     @PostMapping("/users/{username}/follow")
     public String post(@RequestParam String name, @PathVariable String username) {
         Account followed = accountRepository.findByUsername(name);
-        Account follower = accountRepository.findByUsername(username);
+        Account follower = accServ.getAccount();
+        if (followed == follower) {
+            return "redirect:/login";
+        }
         FollowUser user = new FollowUser(follower, followed, LocalDateTime.now());
         followRepo.save(user);
 
-        return "redirect:/users";
+        return "redirect:/user/{username}";
     }
 
 }
