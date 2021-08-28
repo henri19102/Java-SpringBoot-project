@@ -34,18 +34,21 @@
                                                         <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
                                                             <div class="caption">
                                                                 <p th:text="${image.text}" >Lorem ipsum...</p>
+                                                                <p th:text="${#lists.size(image.likes)}" >Lorem ipsum...</p>
+
                                                             </div>
                                                     </a>
-                                                    <button class="btn btn-primary" >
-                                                        <i class="bi bi-hand-thumbs-up"></i>
-                                                        Like
-                                                    </button>
+                                                    <form th:if="${isUserLoggedIn == true}" th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
+                                                        <div class="form-check">
+                                                            <input type="submit"  value="like" /> 
+                                                        </div>
+                                                    </form>
                                                     <form th:if="${isUserLoggedIn == true}" th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}" method="POST">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1" th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'"  >
-                                                          <input type="submit"  value="select profile picture" /> 
-                                                            
-                                                    </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1" th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'"  >
+                                                                <input type="submit"  value="select profile picture" /> 
+
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>

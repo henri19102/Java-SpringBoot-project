@@ -6,6 +6,7 @@
 package projekti.Controllers;
 
 import java.io.IOException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,8 @@ public class ImageController {
     @GetMapping("/{username}/images")
     public String album(Model model, @PathVariable String username) {
         Account user = accountRepo.findByUsername(username);
-        model.addAttribute("images", imageRepo.findByAccountId(user.getId()));
+        List<Image> usersImages = imageRepo.findByAccountId(user.getId());
+        model.addAttribute("images", usersImages);
         model.addAttribute("username", username);
         model.addAttribute("isUserLoggedIn", accountService.isUserLoggedIn());
         return "images";
@@ -63,7 +65,7 @@ public class ImageController {
     public String image(Model model, @PathVariable String username, @PathVariable Long id) {
         Account user = accountRepo.findByUsername(username);
         Image img = imageRepo.getOne(id);
-        
+
         model.addAttribute("image", img);
         model.addAttribute("username", username);
         model.addAttribute("comments", img.getComments());
@@ -120,8 +122,22 @@ public class ImageController {
         return "redirect:/{username}/images/{id}";
     }
 
+    @PostMapping("/{username}/images/{id}/like")
+    public String like(@PathVariable String username, @PathVariable Long id) {
+
+        Account account = accountService.getAccount();
+        Image image = imageRepo.getOne(id);
+        image.getLikes().add(account);
+        imageRepo.save(image);
+
+        return "redirect:/{username}/images";
+    }
+
     @PostMapping("/{username}/images/{id}/profile-picture")
     public String profilepic(@PathVariable String username, @PathVariable Long id, @RequestParam String profilepic) {
+        Image oldProfilePic = imageRepo.findByProfilePic(true);
+        oldProfilePic.setProfilePic(false);
+        imageRepo.save(oldProfilePic);
 
         Image image = imageRepo.getOne(id);
         image.setProfilePic(true);
