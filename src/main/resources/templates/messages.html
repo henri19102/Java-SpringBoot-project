@@ -22,7 +22,13 @@
             <div th:each="msg : ${messages}" >
                 <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}">
                     <p  th:text="${msg.text}">
+                        <p th:text="${#lists.size(msg.likes)}" >Lorem ipsum...</p>
                 </a>
+                <form th:if="${isUserLoggedIn == true}" th:action="@{/{username}/messages/{id}/like (username=${username}, id=${msg.id})}" method="POST">
+                    <div class="form-check">
+                        <input type="submit"  value="like" /> 
+                    </div>
+                </form>
             </div>
 
 

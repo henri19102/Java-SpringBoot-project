@@ -25,6 +25,8 @@ import projekti.JpaRepositories.MessageRepository;
 import projekti.Models.FollowUser;
 import projekti.Models.Message;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /**
  *
@@ -90,13 +92,38 @@ public class AccountController {
 
     @GetMapping("/{profilePageName}")
     public String profilePage(Model model, @PathVariable String profilePageName) {
+
         Account account = accountRepository.findByProfilePageName(profilePageName);
+
+        boolean owner = account == accServ.getAccount() ? true : false;
+
         List<Image> usersImages = imgRepo.findByAccountId(account.getId());
-        List<Message> messages = msgRepo.findAllByAccountId(account.getId());
- 
+        List<FollowUser> followedUsers = followRepo.findAllByFollowerId(account.getId());
+        List<Long> usersIds = new ArrayList<>();
+        usersIds.add(account.getId());
+
+        List<Message> messages = new ArrayList<>();
+        if (followedUsers.size() > 0) {
+            followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
+            messages = msgRepo.findByAccountIdIn(usersIds);
+        }
+        if (followedUsers.isEmpty()) {
+            messages = msgRepo.findAllByAccountId(account.getId());
+        }
+        Image newImg = new Image();
+        if (usersImages.isEmpty()) {
+            newImg = null;
+        }
+        if (usersImages.size() > 0) {
+            newImg = usersImages.get(0);
+        }
+
         model.addAttribute("account", account);
         model.addAttribute("messages", messages);
-        model.addAttribute("image", usersImages.get(0));
+        model.addAttribute("profilePageName", profilePageName);
+        model.addAttribute("username", account.getUsername());
+        model.addAttribute("image", newImg);
+        model.addAttribute("owner", owner);
 
         return "profilepage";
     }
@@ -112,6 +139,14 @@ public class AccountController {
         followRepo.save(user);
 
         return "redirect:/user/{username}";
+    }
+
+    @PostMapping("/{profilePageName}/message")
+    public String saveMessage(@PathVariable String profilePageName, @RequestParam String messagetext) {
+        Account user = accountRepository.findByProfilePageName(profilePageName);
+        Message message = new Message(user, messagetext, LocalDateTime.now());
+        msgRepo.save(message);
+        return "redirect:/{profilePageName}";
     }
 
 }

@@ -7,4 +7,7 @@ import projekti.Models.Message;
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findAllByAccountId(Long accountId);
+
+    List<Message> findByAccountIdIn(List<Long> allIds);
+
 }

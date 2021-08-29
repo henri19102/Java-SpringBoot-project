@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import projekti.JpaRepositories.AccountRepository;
 import projekti.JpaRepositories.CommentRepository;
+import projekti.JpaRepositories.FollowUserRepository;
 import projekti.JpaRepositories.MessageRepository;
 import projekti.Models.Account;
 import projekti.Models.Comment;
@@ -39,6 +40,9 @@ public class MessageController {
     private CommentRepository commentRepo;
 
     @Autowired
+    private FollowUserRepository followRepo;
+
+    @Autowired
     private AccountService accServ;
 
     @GetMapping("/{username}/messages")
@@ -47,6 +51,7 @@ public class MessageController {
         List<Message> all = messageRepo.findAll();
         model.addAttribute("username", username);
         model.addAttribute("messages", all);
+        model.addAttribute("isUserLoggedIn", accServ.isUserLoggedIn());
 
         return "messages";
     }
@@ -78,11 +83,23 @@ public class MessageController {
         return "redirect:/{username}/messages/{id}";
     }
 
-    @PostMapping("/{username}/message")
-    public String saveMessage(@PathVariable String username, @RequestParam String messagetext) {
-        Account user = userRepo.findByUsername(username);
-        Message message = new Message(user, messagetext, LocalDateTime.now());
-        messageRepo.save(message);
-        return "redirect:/{username}/messages";
+    @PostMapping("/{username}/messages/{id}/like")
+    public String like(@PathVariable String username, @PathVariable Long id) {
+
+        Account account = accServ.getAccount();
+        Message msg = messageRepo.getOne(id);
+
+        msg.getLikes().add(account);
+        messageRepo.save(msg);
+
+        return "redirect:/{username}/images";
     }
+
+//    @PostMapping("/{username}/message")
+//    public String saveMessage(@PathVariable String username, @RequestParam String messagetext) {
+//        Account user = userRepo.findByUsername(username);
+//        Message message = new Message(user, messagetext, LocalDateTime.now());
+//        messageRepo.save(message);
+//        return "redirect:/{username}/messages";
+//    }
 }

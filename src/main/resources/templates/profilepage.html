@@ -14,8 +14,14 @@
                         <div th:replace="fragments/navbar :: navbar"></div>
 
                         <div style="background-color: white;" >
+
+                            <form th:if="${owner == true}" th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }" method="POST">
+                                <input  type="text"  name="messagetext" />
+                                <input type="submit"  value="add message" />          
+                            </form>
+
                             <h1 th:text="${account.firstName}+' ' + ${account.lastName}" ></h1>
-                            <a>
+                            <a th:href="@{/{username}/images (username=${username})}" >
                                 <p>view image album</p>
                             </a>
                             <h2>Messages:</h2>
