@@ -15,33 +15,54 @@
 
                         <div style="background-color: white;" >
 
+                            <datalist id="users" >
+                                <option th:each="user : ${users}"
+                                        th:text="${user.firstName + ' ' + user.lastName }"
+                                        th:value="${user.username}"
+
+                                        >
+                                    >
+                            </datalist>
+
+                            <form th:action="@{{profilePageName}/follow (profilePageName=${profilePageName}) }" method="POST">
+                                <input  type="text" list="users" name="name" />
+                                <input type="submit"  value="follow" />          
+                            </form>
+
                             <form th:if="${owner == true}" th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }" method="POST">
                                 <input  type="text"  name="messagetext" />
                                 <input type="submit"  value="add message" />          
                             </form>
 
-                            <h1 th:text="${account.firstName}+' ' + ${account.lastName}" ></h1>
-                            <a th:href="@{/{username}/images (username=${username})}" >
-                                <p>view image album</p>
-                            </a>
-                            <h2>Messages:</h2>
 
-                            <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%" >
-                                <div class="card-header">
-                                    <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}" ></p>
+
+                            <h1 th:text="${account.firstName}+' ' + ${account.lastName}" ></h1>
+                            <img th:if="${image != null}" th:src="@{/images/{id}/content(id=${image.getId()})}" class="img-thumbnail" alt="..." style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" >
+                                <a th:href="@{/{username}/images (username=${username})}" >
+                                    <p>view image album</p>
+                                </a>
+                                <div th:each="name : ${follow}" >
+                                    <p th:text="${name}" >view image album</p>
+
                                 </div>
-                                <div class="card-body" style="background-color: oldlace;" >
-                                    <p th:text="${msg.text}" class="card-text"></p>
-                                    <a href="#" class="btn btn-primary">Comment</a>
-                                    <button class="btn btn-primary" >
-                                        <i class="bi bi-hand-thumbs-up"></i>
-                                        Like
-                                    </button>
+                                <h2>Messages:</h2>
+
+                                <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%" >
+                                    <div class="card-header">
+                                        <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}" ></p>
+                                    </div>
+                                    <div class="card-body" style="background-color: oldlace;" >
+                                        <p th:text="${msg.text}" class="card-text"></p>
+                                        <a href="#" class="btn btn-primary">Comment</a>
+                                        <button class="btn btn-primary" >
+                                            <i class="bi bi-hand-thumbs-up"></i>
+                                            Like
+                                        </button>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <p th:text="${msg.sendTime}" ></p>
+                                    </div>
                                 </div>
-                                <div class="card-footer text-muted">
-                                    <p th:text="${msg.sendTime}" ></p>
-                                </div>
-                            </div>
 
                         </div>
                     </div>

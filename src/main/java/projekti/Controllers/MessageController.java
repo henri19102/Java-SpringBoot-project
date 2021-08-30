@@ -51,7 +51,7 @@ public class MessageController {
         List<Message> all = messageRepo.findAll();
         model.addAttribute("username", username);
         model.addAttribute("messages", all);
-        model.addAttribute("isUserLoggedIn", accServ.isUserLoggedIn());
+        model.addAttribute("isUserLoggedIn", accServ.getLoggedInUser());
 
         return "messages";
     }
@@ -62,7 +62,7 @@ public class MessageController {
         Message msg = messageRepo.getOne(id);
         model.addAttribute("username", username);
         model.addAttribute("msg", msg);
-        model.addAttribute("auth", accServ.isUserLoggedIn());
+        model.addAttribute("auth", accServ.getLoggedInUser());
         model.addAttribute("comments", msg.getComments());
         return "message";
     }
@@ -70,7 +70,7 @@ public class MessageController {
     @PostMapping("/{username}/messages/{id}/comment")
     public String comment(@PathVariable String username, @PathVariable Long id, @RequestParam String comment) {
 
-        Account account = accServ.getAccount();
+        Account account = accServ.getLoggedInUser();
         Message msg = messageRepo.getOne(id);
 
         Comment com = new Comment();
@@ -86,7 +86,7 @@ public class MessageController {
     @PostMapping("/{username}/messages/{id}/like")
     public String like(@PathVariable String username, @PathVariable Long id) {
 
-        Account account = accServ.getAccount();
+        Account account = accServ.getLoggedInUser();
         Message msg = messageRepo.getOne(id);
 
         msg.getLikes().add(account);

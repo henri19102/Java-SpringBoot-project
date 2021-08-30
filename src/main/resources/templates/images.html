@@ -12,7 +12,7 @@
                     <div class="container">
                         <div th:replace="fragments/navbar :: navbar"></div>
 
-                        <div th:if="${isUserLoggedIn == true}" >
+                        <div th:if="${owner == true}" >
                             <form method="POST" th:action="@{/{username}/images(username=${username})}" enctype="multipart/form-data">
                                 <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/><br>
                                     <input  type="text"  name="imagetext" /><br>
@@ -38,12 +38,12 @@
 
                                                             </div>
                                                     </a>
-                                                    <form th:if="${isUserLoggedIn == true}" th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
+                                                    <form th:if="${isUserLoggedIn != null}" th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
                                                         <div class="form-check">
                                                             <input type="submit"  value="like" /> 
                                                         </div>
                                                     </form>
-                                                    <form th:if="${isUserLoggedIn == true}" th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}" method="POST">
+                                                    <form th:if="${owner == true}" th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}" method="POST">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1" th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'"  >
                                                                 <input type="submit"  value="select profile picture" /> 

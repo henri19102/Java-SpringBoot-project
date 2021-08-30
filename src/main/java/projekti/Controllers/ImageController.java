@@ -43,21 +43,15 @@ public class ImageController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/images")
-    public String files(Model model) {
-        model.addAttribute("images", imageRepo.findAll());
-        model.addAttribute("userId", accountService.getLoggedInUserId());
-        model.addAttribute("isUserLoggedIn", accountService.isUserLoggedIn());
-        return "images";
-    }
-
     @GetMapping("/{username}/images")
     public String album(Model model, @PathVariable String username) {
         Account user = accountRepo.findByUsername(username);
         List<Image> usersImages = imageRepo.findByAccountId(user.getId());
         model.addAttribute("images", usersImages);
         model.addAttribute("username", username);
-        model.addAttribute("isUserLoggedIn", accountService.isUserLoggedIn());
+        model.addAttribute("isUserLoggedIn", accountService.getLoggedInUser());
+        model.addAttribute("owner", accountService.isOwner(user.getId()));
+
         return "images";
     }
 
@@ -69,7 +63,7 @@ public class ImageController {
         model.addAttribute("image", img);
         model.addAttribute("username", username);
         model.addAttribute("comments", img.getComments());
-        model.addAttribute("loggedIn", accountService.isUserLoggedIn());
+        model.addAttribute("loggedIn", accountService.getLoggedInUser());
 
         return "image";
     }
@@ -109,7 +103,7 @@ public class ImageController {
     @PostMapping("/{username}/images/{id}/comment")
     public String comment(@PathVariable String username, @PathVariable Long id, @RequestParam String comment) {
 
-        Account account = accountService.getAccount();
+        Account account = accountService.getLoggedInUser();
         Image image = imageRepo.getOne(id);
 
         Comment com = new Comment();
@@ -125,7 +119,7 @@ public class ImageController {
     @PostMapping("/{username}/images/{id}/like")
     public String like(@PathVariable String username, @PathVariable Long id) {
 
-        Account account = accountService.getAccount();
+        Account account = accountService.getLoggedInUser();
         Image image = imageRepo.getOne(id);
         image.getLikes().add(account);
         imageRepo.save(image);
@@ -135,13 +129,19 @@ public class ImageController {
 
     @PostMapping("/{username}/images/{id}/profile-picture")
     public String profilepic(@PathVariable String username, @PathVariable Long id, @RequestParam String profilepic) {
-        Image oldProfilePic = imageRepo.findByProfilePic(true);
+        Image oldProfilePic = new Image();
+        if (imageRepo.findByProfilePicAndAccountId(true, accountRepo.findByUsername(username).getId()) == null) {
+            Image image = imageRepo.getOne(id);
+            image.setProfilePic(true);
+            imageRepo.save(image);
+        }
+        imageRepo.findByProfilePicAndAccountId(true, accountRepo.findByUsername(username).getId());
         oldProfilePic.setProfilePic(false);
         imageRepo.save(oldProfilePic);
 
-        Image image = imageRepo.getOne(id);
-        image.setProfilePic(true);
-        imageRepo.save(image);
+        Image image2 = imageRepo.getOne(id);
+        image2.setProfilePic(true);
+        imageRepo.save(image2);
 
         return "redirect:/{username}/images";
     }

@@ -83,7 +83,7 @@ public class AccountController {
 
     @GetMapping("/user/followed")
     public String users3(Model model) {
-        Long id = accServ.getLoggedInUserId();
+        Long id = accServ.getLoggedInUser().getId();
         List<FollowUser> all = followRepo.findAllByFollowerId(id);
 
         model.addAttribute("users", all);
@@ -92,53 +92,31 @@ public class AccountController {
 
     @GetMapping("/{profilePageName}")
     public String profilePage(Model model, @PathVariable String profilePageName) {
-
         Account account = accountRepository.findByProfilePageName(profilePageName);
 
-        boolean owner = account == accServ.getAccount() ? true : false;
-
-        List<Image> usersImages = imgRepo.findByAccountId(account.getId());
-        List<FollowUser> followedUsers = followRepo.findAllByFollowerId(account.getId());
-        List<Long> usersIds = new ArrayList<>();
-        usersIds.add(account.getId());
-
-        List<Message> messages = new ArrayList<>();
-        if (followedUsers.size() > 0) {
-            followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
-            messages = msgRepo.findByAccountIdIn(usersIds);
-        }
-        if (followedUsers.isEmpty()) {
-            messages = msgRepo.findAllByAccountId(account.getId());
-        }
-        Image newImg = new Image();
-        if (usersImages.isEmpty()) {
-            newImg = null;
-        }
-        if (usersImages.size() > 0) {
-            newImg = usersImages.get(0);
-        }
-
         model.addAttribute("account", account);
-        model.addAttribute("messages", messages);
+        model.addAttribute("messages", accServ.profilepageMessages(account.getId()));
         model.addAttribute("profilePageName", profilePageName);
         model.addAttribute("username", account.getUsername());
-        model.addAttribute("image", newImg);
-        model.addAttribute("owner", owner);
+        model.addAttribute("image", accServ.getProfilePic(account.getId()));
+        model.addAttribute("owner", accServ.isOwner(account.getId()));
+        model.addAttribute("follow", accServ.listFollowedUsers(account.getId()));
+        model.addAttribute("users", accountRepository.findAll());
 
         return "profilepage";
     }
 
-    @PostMapping("/users/{username}/follow")
-    public String post(@RequestParam String name, @PathVariable String username) {
+    @PostMapping("{profilePageName}/follow")
+    public String post(@RequestParam String name, @PathVariable String profilePageName) {
         Account followed = accountRepository.findByUsername(name);
-        Account follower = accServ.getAccount();
+        Account follower = accServ.getLoggedInUser();
         if (followed == follower) {
             return "redirect:/login";
         }
         FollowUser user = new FollowUser(follower, followed, LocalDateTime.now());
         followRepo.save(user);
 
-        return "redirect:/user/{username}";
+        return "redirect:/{profilePageName}";
     }
 
     @PostMapping("/{profilePageName}/message")

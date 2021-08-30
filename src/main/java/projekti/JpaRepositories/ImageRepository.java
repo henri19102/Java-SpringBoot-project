@@ -13,6 +13,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     
     List<Image> findByAccountId(Long accountId);
     
-    Image findByProfilePic(boolean trueValue);
+    Image findByProfilePicAndAccountId(boolean trueValue, Long accountId);
     
 }
