@@ -102,6 +102,7 @@ public class AccountController {
         model.addAttribute("owner", accServ.isOwner(account.getId()));
         model.addAttribute("follow", accServ.listFollowedUsers(account.getId()));
         model.addAttribute("users", accountRepository.findAll());
+        model.addAttribute("loggedIn", accServ.getLoggedInUser());
 
         return "profilepage";
     }
@@ -115,6 +116,14 @@ public class AccountController {
         }
         FollowUser user = new FollowUser(follower, followed, LocalDateTime.now());
         followRepo.save(user);
+
+        return "redirect:/{profilePageName}";
+    }
+
+    @PostMapping("{profilePageName}/unfollow")
+    public String unfollow(@RequestParam String name, @PathVariable String profilePageName) {
+        Account followed = accountRepository.findByUsername(name);
+        accServ.unFollow(followed.getId());
 
         return "redirect:/{profilePageName}";
     }

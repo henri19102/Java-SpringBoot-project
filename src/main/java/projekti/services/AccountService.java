@@ -87,6 +87,15 @@ public class AccountService {
         return imgRepo.findByProfilePicAndAccountId(true, id);
     }
 
+    public void unFollow(Long followedUserId) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (accountRepo.findByUsername(auth.getName()) == null) {
+            return;
+        }
+        FollowUser user = followRepo.findByFollowerIdAndFollowedUserId(accountRepo.findByUsername(auth.getName()).getId(), followedUserId);
+        followRepo.deleteById(user.getId());
+    }
+
 //    public String getProfilePageName() {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        Account loggedInUser = accountRepo.findByUsername(auth.getName());
