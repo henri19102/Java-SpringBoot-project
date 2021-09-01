@@ -27,6 +27,8 @@ import projekti.Models.Message;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.stream.Stream;
+import projekti.JpaRepositories.BlockUserRepository;
+import projekti.Models.BlockUser;
 
 /**
  *
@@ -43,6 +45,9 @@ public class AccountController {
 
     @Autowired
     FollowUserRepository followRepo;
+
+    @Autowired
+    BlockUserRepository BlockRepo;
 
     @Autowired
     ImageRepository imgRepo;
@@ -101,6 +106,7 @@ public class AccountController {
         model.addAttribute("image", accServ.getProfilePic(account.getId()));
         model.addAttribute("owner", accServ.isOwner(account.getId()));
         model.addAttribute("follow", accServ.listFollowedUsers(account.getId()));
+        model.addAttribute("followers", accServ.listFollowingUsers());
         model.addAttribute("users", accountRepository.findAll());
         model.addAttribute("loggedIn", accServ.getLoggedInUser());
 
@@ -110,13 +116,7 @@ public class AccountController {
     @PostMapping("{profilePageName}/follow")
     public String post(@RequestParam String name, @PathVariable String profilePageName) {
         Account followed = accountRepository.findByUsername(name);
-        Account follower = accServ.getLoggedInUser();
-        if (followed == follower) {
-            return "redirect:/login";
-        }
-        FollowUser user = new FollowUser(follower, followed, LocalDateTime.now());
-        followRepo.save(user);
-
+        accServ.follow(followed);
         return "redirect:/{profilePageName}";
     }
 
@@ -124,7 +124,20 @@ public class AccountController {
     public String unfollow(@RequestParam String name, @PathVariable String profilePageName) {
         Account followed = accountRepository.findByUsername(name);
         accServ.unFollow(followed.getId());
+        return "redirect:/{profilePageName}";
+    }
 
+    @PostMapping("{profilePageName}/block")
+    public String block(@RequestParam String name, @PathVariable String profilePageName) {
+        Account blocked = accountRepository.findByUsername(name);
+        accServ.block(blocked);
+        return "redirect:/{profilePageName}";
+    }
+
+    @PostMapping("{profilePageName}/unblock")
+    public String unblock(@RequestParam String name, @PathVariable String profilePageName) {
+        Account blocked = accountRepository.findByUsername(name);
+        accServ.unBlock(blocked);
         return "redirect:/{profilePageName}";
     }
 

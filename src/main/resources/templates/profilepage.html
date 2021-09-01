@@ -38,6 +38,14 @@
                                         <input  type="text" list="users" name="name" />
                                         <input type="submit"  value="follow" />          
                                     </form>
+                                    <form th:action="@{{profilePageName}/block (profilePageName=${profilePageName}) }" method="POST">
+                                        <input  type="text" list="users" name="name" />
+                                        <input type="submit"  value="block" />          
+                                    </form>
+                                    <form th:action="@{{profilePageName}/unblock (profilePageName=${profilePageName}) }" method="POST">
+                                        <input  type="text" list="users" name="name" />
+                                        <input type="submit"  value="unblock" />          
+                                    </form>
                                 </div>
                                 <div class="col-3" >
                                     <form th:if="${owner == true}" th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }" method="POST">
@@ -45,12 +53,12 @@
                                         <input type="submit"  value="add message" />          
                                     </form>
                                 </div>
-                                <div class="col-3" >
+                                <div class="col-2" >
                                     <a th:href="@{/{username}/images (username=${username})}" >
                                         <p>view image album</p>
                                     </a>
                                 </div>
-                                <div class="col-3" >
+                                <div class="col-2" >
                                     <ul class="nav">
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followed friends</a>
@@ -63,6 +71,23 @@
                                                             <input type="hidden" th:value="${user}" style="margin: 2px" name="name" />
                                                             <input type="submit"  value="unfollow" style="margin: 2px" />          
                                                         </form>
+                                                    </div>
+
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-2" >
+                                    <ul class="nav">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followers</a>
+                                            <ul class="dropdown-menu">
+                                                <li th:each="user : ${followers}" >
+                                                    <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
+                                                        <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
+                                                        <input type="button"  value="view page" style="margin: 2px"   />  
+                                                        
                                                     </div>
 
                                                 </li>
@@ -102,7 +127,7 @@
                                     <p th:text="${#lists.size(msg.likes)}" ></p>
                                 </div>
                                 <div class="card-footer text-muted">
-                                    <p th:text="${msg.sendTime}" ></p>
+                                    <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}" ></p>
                                 </div>
                             </div>
 

@@ -129,19 +129,19 @@ public class ImageController {
 
     @PostMapping("/{username}/images/{id}/profile-picture")
     public String profilepic(@PathVariable String username, @PathVariable Long id, @RequestParam String profilepic) {
-        Image oldProfilePic = new Image();
         if (imageRepo.findByProfilePicAndAccountId(true, accountRepo.findByUsername(username).getId()) == null) {
             Image image = imageRepo.getOne(id);
             image.setProfilePic(true);
             imageRepo.save(image);
         }
-        imageRepo.findByProfilePicAndAccountId(true, accountRepo.findByUsername(username).getId());
-        oldProfilePic.setProfilePic(false);
-        imageRepo.save(oldProfilePic);
-
-        Image image2 = imageRepo.getOne(id);
-        image2.setProfilePic(true);
-        imageRepo.save(image2);
+        if (imageRepo.findByProfilePicAndAccountId(true, accountRepo.findByUsername(username).getId()) != null) {
+            Image pic = imageRepo.findByProfilePicAndAccountId(true, accountRepo.findByUsername(username).getId());
+            pic.setProfilePic(false);
+            imageRepo.save(pic);
+            Image image2 = imageRepo.getOne(id);
+            image2.setProfilePic(true);
+            imageRepo.save(image2);
+        }
 
         return "redirect:/{username}/images";
     }
