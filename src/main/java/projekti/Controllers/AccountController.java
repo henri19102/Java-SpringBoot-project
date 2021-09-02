@@ -73,7 +73,8 @@ public class AccountController {
     }
 
     @GetMapping("/login")
-    public String logIn() {
+    public String logIn(Model model) {
+        model.addAttribute("loggedIn", null);
         return "login";
     }
 
