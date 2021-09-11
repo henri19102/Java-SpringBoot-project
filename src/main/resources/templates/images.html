@@ -10,7 +10,7 @@
                 <body style="background-color: #eee;" >
 
                     <div class="container">
-                        <div th:replace="fragments/navbar :: navbar"></div>
+                        <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
 
                         <div th:if="${owner == true}" >
                             <form method="POST" th:action="@{/{username}/images(username=${username})}" enctype="multipart/form-data">
@@ -38,7 +38,7 @@
 
                                                             </div>
                                                     </a>
-                                                    <form th:if="${isUserLoggedIn != null}" th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
+                                                    <form th:if="${loggedIn != null}" th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
                                                         <div class="form-check">
                                                             <input type="submit"  value="like" /> 
                                                         </div>

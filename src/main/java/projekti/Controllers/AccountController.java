@@ -97,11 +97,11 @@ public class AccountController {
     }
 
     @GetMapping("/{profilePageName}")
-    public String profilePage(Model model, @PathVariable String profilePageName) {
+    public String profilePage(Model model, @PathVariable String profilePageName, @RequestParam(defaultValue = "0") Integer page) {
         Account account = accountRepository.findByProfilePageName(profilePageName);
 
         model.addAttribute("account", account);
-        model.addAttribute("messages", accServ.profilepageMessages(account.getId()));
+        model.addAttribute("messages", accServ.profilepageMessages(account.getId(), page));
         model.addAttribute("profilePageName", profilePageName);
         model.addAttribute("username", account.getUsername());
         model.addAttribute("image", accServ.getProfilePic(account.getId()));

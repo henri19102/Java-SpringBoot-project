@@ -10,7 +10,7 @@
     <body style="background-color: #eee;" >
 
         <div class="container">
-            <div th:replace="fragments/navbar :: navbar "></div>
+            <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
 
             <div class="row">
                 <div class="col-md-4"  style="background-color: blanchedalmond; border: solid black" >
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="col-md-4"  style="background-color: blanchedalmond; border: solid black"  >
-                    <form th:if="${auth != null}" th:action="@{/{username}/messages/{id}/comment (username=${username}, id=${msg.id})}" method="POST">
+                    <form th:if="${loggedIn != null}" th:action="@{/{username}/messages/{id}/comment (username=${username}, id=${msg.id})}" method="POST">
                         <input  type="text"  name="comment" />
                         <input type="submit"  value="add comment" />          
                     </form>

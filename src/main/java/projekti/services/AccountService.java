@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -81,7 +84,8 @@ public class AccountService {
         return users;
     }
 
-    public List<Message> profilepageMessages(Long id) {
+    public List<Message> profilepageMessages(Long id, int page) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("sendTime").descending());
         List<FollowUser> followedUsers = followRepo.findAllByFollowerId(id);
         List<Long> usersIds = new ArrayList<>();
         usersIds.add(id);
@@ -89,10 +93,10 @@ public class AccountService {
         List<Message> messages = new ArrayList<>();
         if (followedUsers.size() > 0) {
             followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
-            messages = msgRepo.findByAccountIdIn(usersIds);
+            messages = msgRepo.findByAccountIdIn(usersIds, pageable);
         }
         if (followedUsers.isEmpty()) {
-            messages = msgRepo.findAllByAccountId(id);
+            messages = msgRepo.findAllByAccountId(id, pageable);
         }
         return messages;
     }

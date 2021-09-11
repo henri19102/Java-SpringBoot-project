@@ -49,9 +49,8 @@ public class ImageController {
         List<Image> usersImages = imageRepo.findByAccountId(user.getId());
         model.addAttribute("images", usersImages);
         model.addAttribute("username", username);
-        model.addAttribute("isUserLoggedIn", accountService.getLoggedInUser());
         model.addAttribute("owner", accountService.isOwner(user.getId()));
-
+        model.addAttribute("loggedIn", accountService.getLoggedInUser());
         return "images";
     }
 

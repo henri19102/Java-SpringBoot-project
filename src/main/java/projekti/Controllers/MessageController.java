@@ -64,6 +64,7 @@ public class MessageController {
         model.addAttribute("msg", msg);
         model.addAttribute("auth", accServ.getLoggedInUser());
         model.addAttribute("comments", msg.getComments());
+        model.addAttribute("loggedIn", accServ.getLoggedInUser());
         return "message";
     }
 
