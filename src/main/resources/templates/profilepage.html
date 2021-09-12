@@ -110,6 +110,7 @@
 
                                             <h2>Messages:</h2>
                             <p th:text="${msgSize}" ></p>
+                            <p th:with="url=(${#strings.defaultString(#httpServletRequest.queryString, '')})" th:text="${url}"></p>
 
 
                             <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%" >
@@ -141,7 +142,7 @@
                         <nav th:if="${msgSize>0}" aria-label="Page navigation example">
                             <ul class="pagination">
 
-                                <li th:each="i: ${#numbers.sequence(0, msgSize-1)}" class="page-item">
+                                <li th:each="i: ${#numbers.sequence(0, msgSize-1)}" class="page-item" th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}" >
                                     <a class="page-link" th:href="@{/{profilepage}?page={i} (profilepage = ${loggedIn.profilePageName}, i = ${i})}" th:text="${i+1}" >1</a>
                                 </li>
 
