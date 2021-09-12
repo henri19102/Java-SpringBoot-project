@@ -101,7 +101,8 @@ public class AccountController {
         Account account = accountRepository.findByProfilePageName(profilePageName);
 
         model.addAttribute("account", account);
-        model.addAttribute("messages", accServ.profilepageMessages(account.getId(), page));
+        model.addAttribute("messages", accServ.profilepagePagedMessages(account.getId(), page));
+        model.addAttribute("msgSize", (int)Math.ceil(accServ.profilepageMessagesSize(account.getId())/5.0f));
         model.addAttribute("profilePageName", profilePageName);
         model.addAttribute("username", account.getUsername());
         model.addAttribute("image", accServ.getProfilePic(account.getId()));

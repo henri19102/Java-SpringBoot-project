@@ -84,15 +84,33 @@ public class AccountService {
         return users;
     }
 
-    public List<Message> profilepageMessages(Long id, int page) {
+    public int profilepageMessagesSize(Long id) {
+        List<FollowUser> followedUsers = followRepo.findAllByFollowerId(id);
+        List<Long> usersIds = new ArrayList<>();
+        usersIds.add(id);
+
+        int msgSize = 0;
+        if (followedUsers.size() > 0) {
+            followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
+            msgSize = msgRepo.countByAccountIdIn(usersIds);
+        }
+        if (followedUsers.isEmpty()) {
+            msgSize = msgRepo.countByAccountId(id);
+        }
+        return msgSize;
+    }
+
+    public List<Message> profilepagePagedMessages(Long id, int page) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("sendTime").descending());
         List<FollowUser> followedUsers = followRepo.findAllByFollowerId(id);
         List<Long> usersIds = new ArrayList<>();
         usersIds.add(id);
 
         List<Message> messages = new ArrayList<>();
+        int msgSize = 0;
         if (followedUsers.size() > 0) {
             followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
+            msgSize = msgRepo.countByAccountIdIn(usersIds);
             messages = msgRepo.findByAccountIdIn(usersIds, pageable);
         }
         if (followedUsers.isEmpty()) {

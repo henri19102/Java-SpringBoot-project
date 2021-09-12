@@ -109,8 +109,10 @@
 
 
                                             <h2>Messages:</h2>
+                            <p th:text="${msgSize}" ></p>
 
-                                            <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%" >
+
+                            <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%" >
                                                 <div class="card-header">
                                                     <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}" ></p>
                                                 </div>
@@ -135,7 +137,16 @@
 
                                             </div>
 
-                        <p><a  th:href="@{/{profilepage}?page=1 (profilepage = ${loggedIn.profilePageName})}" >My page</a></p>
+
+                        <nav th:if="${msgSize>0}" aria-label="Page navigation example">
+                            <ul class="pagination">
+
+                                <li th:each="i: ${#numbers.sequence(0, msgSize-1)}" class="page-item">
+                                    <a class="page-link" th:href="@{/{profilepage}?page={i} (profilepage = ${loggedIn.profilePageName}, i = ${i})}" th:text="${i+1}" >1</a>
+                                </li>
+
+                            </ul>
+                        </nav>
                                             </div>
 
 

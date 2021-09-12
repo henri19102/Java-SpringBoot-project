@@ -10,6 +10,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findAllByAccountId(Long accountId, Pageable pageable);
 
+    int countByAccountId(Long accountId);
+
     List<Message> findByAccountIdIn(List<Long> allIds, Pageable pageable);
+
+    int countByAccountIdIn(List<Long> allIds);
 
 }
