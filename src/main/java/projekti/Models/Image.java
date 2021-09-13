@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,5 +51,13 @@ public class Image implements Serializable {
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
+
+    public List<Comment> getPagedComments(int page) {
+        if (comments.size()>=3){
+            List<List<Comment>> smallerLists = Lists.partition(comments, 3);
+            return smallerLists.get(page);
+        }
+        return comments;
+    }
 
 }

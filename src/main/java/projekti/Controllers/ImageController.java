@@ -55,13 +55,15 @@ public class ImageController {
     }
 
     @GetMapping("/{username}/images/{id}")
-    public String image(Model model, @PathVariable String username, @PathVariable Long id) {
+    public String image(Model model, @PathVariable String username, @PathVariable Long id, @RequestParam(defaultValue = "0") Integer page) {
         Account user = accountRepo.findByUsername(username);
         Image img = imageRepo.getOne(id);
 
         model.addAttribute("image", img);
         model.addAttribute("username", username);
-        model.addAttribute("comments", img.getComments());
+        model.addAttribute("size", img.getComments().size());
+        model.addAttribute("pages", (int)Math.ceil(img.getComments().size()/3.0f));
+        model.addAttribute("comments", img.getPagedComments(page) );
         model.addAttribute("loggedIn", accountService.getLoggedInUser());
 
         return "image";

@@ -110,7 +110,6 @@ public class AccountService {
         int msgSize = 0;
         if (followedUsers.size() > 0) {
             followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
-            msgSize = msgRepo.countByAccountIdIn(usersIds);
             messages = msgRepo.findByAccountIdIn(usersIds, pageable);
         }
         if (followedUsers.isEmpty()) {

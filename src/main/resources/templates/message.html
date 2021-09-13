@@ -24,10 +24,21 @@
                         <input type="submit"  value="add comment" />          
                     </form>
 
-                    <p th:each="com : ${comments}"
+                    <p th:if="${#lists.size(comments)>0}" th:each="com : ${comments}"
                        th:text="${com.text}"
 
                        >
+
+
+                    <nav th:if="${size>3}" aria-label="Page navigation example">
+                        <ul class="pagination">
+
+                            <li th:each="i: ${#numbers.sequence(0, pages-1)}" class="page-item" th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}" >
+                                <a class="page-link" th:href="@{/{username}/messages/{id}?page={i} (username = ${username}, id=${msg.id}, i = ${i})}" th:text="${i+1}" >1</a>
+                            </li>
+
+                        </ul>
+                    </nav>
                 </div>
 
             </div>

@@ -8,6 +8,9 @@ package projekti.Controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,13 +60,17 @@ public class MessageController {
     }
 
     @GetMapping("/{username}/messages/{id}")
-    public String message(Model model, @PathVariable String username, @PathVariable Long id) {
+    public String message(Model model, @PathVariable String username, @PathVariable Long id, @RequestParam(defaultValue = "0") Integer page) {
+
         Account user = userRepo.findByUsername(username);
         Message msg = messageRepo.getOne(id);
+
         model.addAttribute("username", username);
         model.addAttribute("msg", msg);
         model.addAttribute("auth", accServ.getLoggedInUser());
-        model.addAttribute("comments", msg.getComments());
+        model.addAttribute("size", msg.getComments().size());
+        model.addAttribute("pages", (int)Math.ceil(msg.getComments().size()/3.0f));
+        model.addAttribute("comments", msg.getPagedComments(page) );
         model.addAttribute("loggedIn", accServ.getLoggedInUser());
         return "message";
     }
