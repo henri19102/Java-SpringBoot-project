@@ -7,6 +7,7 @@ package projekti.Controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,6 @@ import projekti.Models.Message;
 import projekti.services.AccountService;
 
 /**
- *
  * @author Henri
  */
 @Controller
@@ -69,8 +69,8 @@ public class MessageController {
         model.addAttribute("msg", msg);
         model.addAttribute("auth", accServ.getLoggedInUser());
         model.addAttribute("size", msg.getComments().size());
-        model.addAttribute("pages", (int)Math.ceil(msg.getComments().size()/3.0f));
-        model.addAttribute("comments", msg.getPagedComments(page) );
+        model.addAttribute("pages", (int) Math.ceil(msg.getComments().size() / 3.0f));
+        model.addAttribute("comments", msg.getPagedComments(page));
         model.addAttribute("loggedIn", accServ.getLoggedInUser());
         return "message";
     }
@@ -96,9 +96,27 @@ public class MessageController {
 
         Account account = accServ.getLoggedInUser();
         Message msg = messageRepo.getOne(id);
+        if (msg.getLikes().contains(account)) {
+            return "redirect:/{username}/images";
+        }
 
         msg.getLikes().add(account);
         messageRepo.save(msg);
+
+        return "redirect:/{username}/images";
+    }
+
+    @PostMapping("/{username}/messages/{id}/unlike")
+    public String unlike(@PathVariable String username, @PathVariable Long id) {
+
+        Account account = accServ.getLoggedInUser();
+        Message msg = messageRepo.getOne(id);
+
+        if (msg.getLikes().contains(account)) {
+            msg.getLikes().remove(account);
+            messageRepo.save(msg);
+            return "redirect:/{username}/images";
+        }
 
         return "redirect:/{username}/images";
     }

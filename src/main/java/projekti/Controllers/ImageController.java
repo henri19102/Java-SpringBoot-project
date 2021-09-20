@@ -83,9 +83,13 @@ public class ImageController {
 
     @PostMapping("/{username}/images")
     public String save(@RequestParam("image") MultipartFile file, @PathVariable String username, @RequestParam String imagetext) throws IOException {
-        Image img = new Image();
 
         Account account = accountRepo.findByUsername(username);
+
+        if (imageRepo.findByAccountId(account.getId()).size()>=10){
+            return "redirect:/{username}/images";
+        }
+        Image img = new Image();
 
         img.setAccount(account);
         img.setName(file.getOriginalFilename());
@@ -96,8 +100,6 @@ public class ImageController {
 
         imageRepo.save(img);
 
-        //  account.getImages().add(img);
-        //  accountRepo.save(account);
         return "redirect:/{username}/images";
     }
 
@@ -122,9 +124,34 @@ public class ImageController {
 
         Account account = accountService.getLoggedInUser();
         Image image = imageRepo.getOne(id);
+        if(image.getLikes().contains(account)){
+            return "redirect:/{username}/images";
+        }
         image.getLikes().add(account);
         imageRepo.save(image);
 
+        return "redirect:/{username}/images";
+    }
+
+    @PostMapping("/{username}/images/{id}/unlike")
+    public String unlike(@PathVariable String username, @PathVariable Long id) {
+
+        Account account = accountService.getLoggedInUser();
+        Image image = imageRepo.getOne(id);
+        if(image.getLikes().contains(account)){
+            image.getLikes().remove(account);
+            imageRepo.save(image);
+            return "redirect:/{username}/images";
+        }
+        return "redirect:/{username}/images";
+    }
+
+    @PostMapping("/{username}/images/{id}")
+    public String deleteImage(@PathVariable String username, @PathVariable Long id) {
+        if (accountService.getLoggedInUser().getUsername() != username){
+            return "redirect:/{username}/images";
+        }
+        imageRepo.deleteById(id);
         return "redirect:/{username}/images";
     }
 

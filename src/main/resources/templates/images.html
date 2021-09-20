@@ -43,6 +43,11 @@
                                                             <input type="submit"  value="like" /> 
                                                         </div>
                                                     </form>
+                                                    <form th:if="${loggedIn != null}" th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}" method="POST">
+                                                        <div class="form-check">
+                                                            <input type="submit"  value="unlike" />
+                                                        </div>
+                                                    </form>
                                                     <form th:if="${owner == true}" th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}" method="POST">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1" th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'"  >
@@ -50,10 +55,16 @@
 
                                                         </div>
                                                     </form>
+                                                    <form th:if="${loggedIn != null}" th:action="@{/{username}/images/{id} (username=${username}, id=${image.id})}" method="POST">
+                                                        <div class="form-check">
+                                                            <input type="submit"  value="delete" />
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
 
                                         </div>
+                    </div>
 
 
 

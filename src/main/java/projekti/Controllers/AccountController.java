@@ -151,4 +151,34 @@ public class AccountController {
         return "redirect:/{profilePageName}";
     }
 
+    @PostMapping("/messages/{id}/like")
+    public String like(@PathVariable Long id) {
+
+        Account account = accServ.getLoggedInUser();
+        Message msg = msgRepo.getOne(id);
+        if (msg.getLikes().contains(account)) {
+            return "redirect:/";
+        }
+
+        msg.getLikes().add(account);
+        msgRepo.save(msg);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/messages/{id}/unlike")
+    public String unlike(@PathVariable Long id) {
+
+        Account account = accServ.getLoggedInUser();
+        Message msg = msgRepo.getOne(id);
+
+        if (msg.getLikes().contains(account)) {
+            msg.getLikes().remove(account);
+            msgRepo.save(msg);
+            return "redirect:/";
+        }
+
+        return "redirect:/";
+    }
+
 }
