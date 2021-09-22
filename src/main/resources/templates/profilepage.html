@@ -120,7 +120,7 @@
                                                 <div class="card-body" style="background-color: oldlace;" >
                                                     <p th:text="${msg.text}" class="card-text"></p>
                                                     <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
-                                                    <form th:if="${loggedIn != null}" th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
+                                                    <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}" th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
                                                         <div class="form-check">
                                                             <button type="submit"  value="like" class="btn btn-primary" >
                                                                 <i class="bi bi-hand-thumbs-up"></i>
@@ -129,7 +129,7 @@
                                                         </div>
                                                     </form>
 
-                                                    <form th:if="${loggedIn != null}" th:action="@{/messages/{id}/unlike (id=${msg.id})}" method="POST">
+                                                    <form th:if="${loggedIn != null && #lists.contains(msg.getLikes(), loggedIn)}" th:action="@{/messages/{id}/unlike (id=${msg.id})}" method="POST">
                                                         <div class="form-check">
                                                             <button type="submit"  value="unlike" class="btn btn-primary" >
                                                                 <i class="bi bi-hand-thumbs-up"></i>
@@ -148,6 +148,7 @@
                                             </div>
 
 
+                        <p th:if="${msgSize>0}" >More messages:</p>
                         <nav th:if="${msgSize>0}" aria-label="Page navigation example">
                             <ul class="pagination">
 

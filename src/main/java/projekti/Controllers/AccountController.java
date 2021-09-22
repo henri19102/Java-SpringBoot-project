@@ -30,6 +30,8 @@ import java.util.stream.Stream;
 import projekti.JpaRepositories.BlockUserRepository;
 import projekti.Models.BlockUser;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  *
  * @author Henri
@@ -152,22 +154,24 @@ public class AccountController {
     }
 
     @PostMapping("/messages/{id}/like")
-    public String like(@PathVariable Long id) {
+    public String like(@PathVariable Long id, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
 
         Account account = accServ.getLoggedInUser();
         Message msg = msgRepo.getOne(id);
         if (msg.getLikes().contains(account)) {
-            return "redirect:/";
+            return "redirect:"+ referer;
         }
 
         msg.getLikes().add(account);
         msgRepo.save(msg);
 
-        return "redirect:/";
+        return "redirect:"+ referer;
     }
 
     @PostMapping("/messages/{id}/unlike")
-    public String unlike(@PathVariable Long id) {
+    public String unlike(@PathVariable Long id, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
 
         Account account = accServ.getLoggedInUser();
         Message msg = msgRepo.getOne(id);
@@ -175,10 +179,10 @@ public class AccountController {
         if (msg.getLikes().contains(account)) {
             msg.getLikes().remove(account);
             msgRepo.save(msg);
-            return "redirect:/";
+            return "redirect:"+ referer;
         }
 
-        return "redirect:/";
+        return "redirect:"+ referer;
     }
 
 }
