@@ -13,11 +13,12 @@
 <div class="container">
     <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
 
-    <div th:if="${owner == true}">
+    <div class="card border-primary mb-3" style="width: 18rem; padding: 1%; margin: 1%" th:if="${owner == true}">
         <form method="POST" th:action="@{/{username}/images(username=${username})}" enctype="multipart/form-data">
-            <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/><br>
-            <input type="text" name="imagetext"/><br>
-            <input type="submit" value="Add!"/>
+            <input style="margin:1%" type="file" name="image" accept="image/png, image/jpeg, image/jpg" id="image"/><br>
+            <p style="margin:1%" class="fw-bold">Add text to the image:</p>
+            <textarea  type="text" name="imagetext"></textarea><br>
+            <input style="margin:1%" type="submit" value="Add!"/>
         </form>
     </div>
     <!--
@@ -29,8 +30,10 @@
             </div>-->
 
     <div class="row">
-        <div class="col-md-4" th:each="image : ${images}" style="background-color: blanchedalmond; border: solid black">
+        <div class="col-md-4" th:each="image : ${images}" >
             <div class="thumbnail">
+
+<!--
                     <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
                     <div class="caption">
                         <p th:text="${image.text}">Lorem ipsum...</p>
@@ -70,7 +73,54 @@
                     <div class="form-check">
                         <input type="submit" value="delete"/>
                     </div>
-                </form>
+                </form>-->
+
+
+
+                <div class="card border-primary mb-3" >
+                    <img th:src="@{/images/{id}/content(id=${image.id})}" style="border: solid gray ">
+                    <div class="card-body">
+                        <h5 class="card-title">Image text:</h5>
+
+                        <p class="card-text" th:text="${image.text}">Lorem ipsum...</p>
+                        <a th:href="@{/{username}/images/{id} (username=${username}, id=${image.id})}">
+                            <button class="btn btn-primary">
+                                show comments
+                            </button>
+                        </a>
+                        <form th:if="${loggedIn != null && !#lists.contains(image.getLikes(), loggedIn)}"
+                              th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
+                            <div class="form-check">
+
+                                <button class="btn btn-secondary" type="submit" >Like</button>
+                            </div>
+                        </form>
+                        <form th:if="${loggedIn != null && #lists.contains(image.getLikes(), loggedIn)}"
+                              th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}"
+                              method="POST">
+                            <div class="form-check">
+                                <input type="submit" value="unlike"/>
+                            </div>
+                        </form>
+                        <form th:if="${owner == true}"
+                              th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}"
+                              method="POST">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1"
+                                       th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'">
+                                <input type="submit" value="select profile picture"/>
+
+                            </div>
+                        </form>
+                        <form th:if="${owner == true}"
+                              th:action="@{/{username}/images/{id} (username=${username}, id=${image.id})}" method="POST">
+                            <div class="form-check">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
 
