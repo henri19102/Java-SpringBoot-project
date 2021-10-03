@@ -27,7 +27,7 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
             .headers().frameOptions().sameOrigin();
             
             http.authorizeRequests()
-            .antMatchers("/h2-console", "/h2-console/**").permitAll()
+            .antMatchers("/h2-console", "/h2-console/**", "/public/styles.css").permitAll()
             .anyRequest().permitAll()
             .and()
             .formLogin()
