@@ -1,168 +1,243 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Hello world</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" >
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello world</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
-                </head>
-                <body style="background-color: #eee;" >
+</head>
+<body style="background-color: #eee;">
 
-                    <div class="container">
-                        <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
+<div class="container">
+    <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
 
-                        <div style="background-color: white;" >
+    <div style="background-color: white;">
 
-                            <div class="row" >
-                                <div class="col-3" >
-                                    <h1 th:text="${account.firstName}+' ' + ${account.lastName}" ></h1>
-                                </div>
-                                <div class="col-3" >
-                                    <img th:if="${image != null}" th:src="@{/images/{id}/content(id=${image.getId()})}" class="img-thumbnail" alt="..." style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" >
-                                        <img th:if="${image == null}" src="/img/profilepic.png" class="img-thumbnail" alt="..." style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;" >
+        <div class="row">
+            <div class="col-3">
+                <h1 th:text="${account.firstName}+' ' + ${account.lastName}"></h1>
+            </div>
+            <div class="col-3">
+                <img th:if="${image != null}" th:src="@{/images/{id}/content(id=${image.getId()})}"
+                     class="img-thumbnail" alt="..."
+                     style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;">
+                <img th:if="${image == null}" src="/img/profilepic.png" class="img-thumbnail" alt="..."
+                     style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;">
+            </div>
+            <div class="col-3">
+                <a class="btn btn-primary" th:href="@{/{username}/images (username=${username})}">
+                    view image album
+                </a>
+            </div>
+        </div>
 
-                                            </div>
-                                            </div>
+        <datalist id="users">
+            <option th:each="user : ${users}"
+                    th:text="${user.firstName + ' ' + user.lastName }"
+                    th:value="${user.username}"
+            >
+                >
+        </datalist>
 
-                                            <datalist id="users" >
-                                                <option th:each="user : ${users}"
-                                                        th:text="${user.firstName + ' ' + user.lastName }"
-                                                        th:value="${user.username}"
-                                                        >
-                                                    >
-                                            </datalist>
+        <!--                         <div class="row" >
+                                     <div class="col-3" >
+                                         <form th:action="@{{profilePageName}/follow (profilePageName=${profilePageName}) }" method="POST">
+                                             <input  type="text" list="users" name="name" />
+                                             <input type="submit"  value="follow" />
+                                             <input type="submit"  value="block" th:formaction="@{{profilePageName}/block (profilePageName=${profilePageName}) }" />
+                                             <input type="submit"  value="unblock" th:formaction="@{{profilePageName}/unblock (profilePageName=${profilePageName}) }" />
+                                             </form>
+                                     </div>
+                                     <div class="col-3" >
+                                         <form th:if="${owner == true}" th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }" method="POST">
+                                             <input  type="text"  name="messagetext" />
+                                             <input type="submit"  value="add message" />
+                                         </form>
+                                     </div>
+                                     <div class="col-2" >
+                                         <a th:href="@{/{username}/images (username=${username})}" >
+                                             <p>view image album</p>
+                                         </a>
+                                     </div>
+                                     <div class="col-2" >
+                                         <ul class="nav">
+                                             <li class="nav-item dropdown">
+                                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followed friends</a>
+                                                 <ul class="dropdown-menu">
+                                                     <li th:each="user : ${follow}" >
+                                                         <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
+                                                             <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
+                                                             <input type="button"  value="view page" style="margin: 2px"   />
+                                                             <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }" method="POST">
+                                                                 <input type="hidden" th:value="${user}" style="margin: 2px" name="name" />
+                                                                 <input type="submit"  value="unfollow" style="margin: 2px" />
+                                                             </form>
+                                                         </div>
 
-                                            <div class="row" >
-                                                <div class="col-3" >
-                                                    <form th:action="@{{profilePageName}/follow (profilePageName=${profilePageName}) }" method="POST">
-                                                        <input  type="text" list="users" name="name" />
-                                                        <input type="submit"  value="follow" />          
-                                                    </form>
-                                                    <form th:action="@{{profilePageName}/block (profilePageName=${profilePageName}) }" method="POST">
-                                                        <input  type="text" list="users" name="name" />
-                                                        <input type="submit"  value="block" />          
-                                                    </form>
-                                                    <form th:action="@{{profilePageName}/unblock (profilePageName=${profilePageName}) }" method="POST">
-                                                        <input  type="text" list="users" name="name" />
-                                                        <input type="submit"  value="unblock" />          
-                                                    </form>
-                                                </div>
-                                                <div class="col-3" >
-                                                    <form th:if="${owner == true}" th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }" method="POST">
-                                                        <input  type="text"  name="messagetext" />
-                                                        <input type="submit"  value="add message" />          
-                                                    </form>
-                                                </div>
-                                                <div class="col-2" >
-                                                    <a th:href="@{/{username}/images (username=${username})}" >
-                                                        <p>view image album</p>
-                                                    </a>
-                                                </div>
-                                                <div class="col-2" >
-                                                    <ul class="nav">
-                                                        <li class="nav-item dropdown">
-                                                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followed friends</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li th:each="user : ${follow}" >
-                                                                    <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
-                                                                        <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
-                                                                        <input type="button"  value="view page" style="margin: 2px"   />  
-                                                                        <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }" method="POST">
-                                                                            <input type="hidden" th:value="${user}" style="margin: 2px" name="name" />
-                                                                            <input type="submit"  value="unfollow" style="margin: 2px" />          
-                                                                        </form>
-                                                                    </div>
+                                                     </li>
+                                                 </ul>
+                                             </li>
+                                         </ul>
+                                     </div>
+                                     <div class="col-2" >
+                                         <ul class="nav">
+                                             <li class="nav-item dropdown">
+                                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followers</a>
+                                                 <ul class="dropdown-menu">
+                                                     <li th:each="user : ${followers}" >
+                                                         <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
+                                                             <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
+                                                             <input type="button"  value="view page" style="margin: 2px"   />
 
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-2" >
-                                                    <ul class="nav">
-                                                        <li class="nav-item dropdown">
-                                                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followers</a>
-                                                            <ul class="dropdown-menu">
-                                                                <li th:each="user : ${followers}" >
-                                                                    <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
-                                                                        <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
-                                                                        <input type="button"  value="view page" style="margin: 2px"   />  
+                                                         </div>
 
-                                                                    </div>
+                                                     </li>
+                                                 </ul>
+                                             </li>
+                                         </ul>
+                                     </div>
 
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-
-
-
-
+                                 </div>-->
 
 
+        <div th:if="${owner == true}" class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form style="display:flex; flex-direction: column;"
+                              th:action="@{{profilePageName}/follow (profilePageName=${profilePageName}) }"
+                              method="POST">
+                            <input type="text" list="users" name="name"/>
+                            <div>
+                                <input type="submit" value="follow"/>
+                                <input type="submit" value="block"
+                                       th:formaction="@{{profilePageName}/block (profilePageName=${profilePageName}) }"/>
+                                <input type="submit" value="unblock"
+                                       th:formaction="@{{profilePageName}/unblock (profilePageName=${profilePageName}) }"/>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div  class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form style="display:flex; flex-direction: column;"
+                              th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }"
+                              method="POST">
+                            <textarea type="text" name="messagetext"></textarea>
+                            <input type="submit" value="add message"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" style="display:flex; flex-direction: column; justify-content: space-around;">
+
+                        <ul class="nav">
+                            <li class=" dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                   aria-expanded="false">My friends</a>
+                                <ul class="dropdown-menu">
+                                    <li th:each="user : ${follow}">
+                                        <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
+                                            <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
+                                            <input type="button" value="view page" style="margin: 2px"/>
+                                            <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
+                                                  method="POST">
+                                                <input type="hidden" th:value="${user}" style="margin: 2px"
+                                                       name="name"/>
+                                                <input type="submit" value="unfollow" style="margin: 2px"/>
+                                            </form>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                   aria-expanded="false">My followers</a>
+                                <ul class="dropdown-menu">
+                                    <li th:each="user : ${followers}">
+                                        <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
+                                            <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
+                                            <input type="button" value="view page" style="margin: 2px"/>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+        </div>
 
 
-
-                                            <h2>Messages:</h2>
-                            <p th:text="${msgSize}" ></p>
-                            <p th:with="url=(${#strings.defaultString(#httpServletRequest.queryString, '')})" th:text="${url}"></p>
-
-
-                            <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%" >
-                                                <div class="card-header">
-                                                    <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}" ></p>
-                                                </div>
-                                                <div class="card-body" style="background-color: oldlace;" >
-                                                    <p th:text="${msg.text}" class="card-text"></p>
-                                                    <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
-                                                    <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}" th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
-                                                        <div class="form-check">
-                                                            <button type="submit"  value="like" class="btn btn-primary" >
-                                                                <i class="bi bi-hand-thumbs-up"></i>
-                                                                Like
-                                                            </button>
-                                                        </div>
-                                                    </form>
-
-                                                    <form th:if="${loggedIn != null && #lists.contains(msg.getLikes(), loggedIn)}" th:action="@{/messages/{id}/unlike (id=${msg.id})}" method="POST">
-                                                        <div class="form-check">
-                                                            <button type="submit"  value="unlike" class="btn btn-primary" >
-                                                                <i class="bi bi-hand-thumbs-up"></i>
-                                                                unLike
-                                                            </button>
-                                                        </div>
-                                                    </form>
-
-                                                    <p th:text="${#lists.size(msg.likes)}" ></p>
-                                                </div>
-                                                <div class="card-footer text-muted">
-                                                    <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}" ></p>
-                                                </div>
-                                            </div>
-
-                                            </div>
+        <h2>Messages:</h2>
+        <p th:text="${msgSize}"></p>
+        <p th:with="url=(${#strings.defaultString(#httpServletRequest.queryString, '')})" th:text="${url}"></p>
 
 
-                        <p th:if="${msgSize>0}" >More messages:</p>
-                        <nav th:if="${msgSize>0}" aria-label="Page navigation example">
-                            <ul class="pagination">
+        <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%">
+            <div class="card-header">
+                <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}"></p>
+            </div>
+            <div class="card-body" style="background-color: oldlace;">
+                <p th:text="${msg.text}" class="card-text"></p>
+                <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
+                <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}"
+                      th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
+                    <div class="form-check">
+                        <button type="submit" value="like" class="btn btn-primary btn-floating">
+                            <i type="submit" value="like" class="bi bi-hand-thumbs-up-fill"></i>
 
-                                <li th:each="i: ${#numbers.sequence(0, msgSize-1)}" class="page-item" th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}" >
-                                    <a class="page-link" th:href="@{/{profilepage}?page={i} (profilepage = ${loggedIn.profilePageName}, i = ${i})}" th:text="${i+1}" >1</a>
-                                </li>
+                        </button>
+                    </div>
+                </form>
 
-                            </ul>
-                        </nav>
-                                            </div>
+                <form th:if="${loggedIn != null && #lists.contains(msg.getLikes(), loggedIn)}"
+                      th:action="@{/messages/{id}/unlike (id=${msg.id})}" method="POST">
+                    <div class="form-check">
+                        <button type="submit" value="unlike" class="btn btn-primary btn-floating">
+                            <i class="bi bi-hand-thumbs-down-fill"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <p th:text="${#lists.size(msg.likes)}"></p>
+            </div>
+            <div class="card-footer text-muted">
+                <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}"></p>
+            </div>
+        </div>
+
+    </div>
 
 
+    <p th:if="${msgSize>0}">More messages:</p>
+    <nav th:if="${msgSize>0}" aria-label="Page navigation example">
+        <ul class="pagination">
 
-                                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-                                            </body>
-                                            </html>
+            <li th:each="i: ${#numbers.sequence(0, msgSize-1)}" class="page-item"
+                th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}">
+                <a class="page-link"
+                   th:href="@{/{profilepage}?page={i} (profilepage = ${loggedIn.profilePageName}, i = ${i})}"
+                   th:text="${i+1}">1</a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+</html>
 
