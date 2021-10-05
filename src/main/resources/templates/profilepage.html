@@ -16,18 +16,18 @@
 
     <div style="background-color: white;">
 
-        <div class="row">
-            <div class="col-3">
+        <div class="row" >
+            <div class="col-3" style="margin-top: 1%;">
                 <h1 th:text="${account.firstName}+' ' + ${account.lastName}"></h1>
             </div>
-            <div class="col-3">
+            <div class="col-3" style="margin-top: 1%;">
                 <img th:if="${image != null}" th:src="@{/images/{id}/content(id=${image.getId()})}"
                      class="img-thumbnail" alt="..."
                      style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;">
                 <img th:if="${image == null}" src="/img/profilepic.png" class="img-thumbnail" alt="..."
                      style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;">
             </div>
-            <div class="col-3">
+            <div class="col-3" style="margin-top: 1%;">
                 <a class="btn btn-primary" th:href="@{/{username}/images (username=${username})}">
                     view image album
                 </a>
@@ -41,66 +41,6 @@
             >
                 >
         </datalist>
-
-        <!--                         <div class="row" >
-                                     <div class="col-3" >
-                                         <form th:action="@{{profilePageName}/follow (profilePageName=${profilePageName}) }" method="POST">
-                                             <input  type="text" list="users" name="name" />
-                                             <input type="submit"  value="follow" />
-                                             <input type="submit"  value="block" th:formaction="@{{profilePageName}/block (profilePageName=${profilePageName}) }" />
-                                             <input type="submit"  value="unblock" th:formaction="@{{profilePageName}/unblock (profilePageName=${profilePageName}) }" />
-                                             </form>
-                                     </div>
-                                     <div class="col-3" >
-                                         <form th:if="${owner == true}" th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }" method="POST">
-                                             <input  type="text"  name="messagetext" />
-                                             <input type="submit"  value="add message" />
-                                         </form>
-                                     </div>
-                                     <div class="col-2" >
-                                         <a th:href="@{/{username}/images (username=${username})}" >
-                                             <p>view image album</p>
-                                         </a>
-                                     </div>
-                                     <div class="col-2" >
-                                         <ul class="nav">
-                                             <li class="nav-item dropdown">
-                                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followed friends</a>
-                                                 <ul class="dropdown-menu">
-                                                     <li th:each="user : ${follow}" >
-                                                         <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
-                                                             <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
-                                                             <input type="button"  value="view page" style="margin: 2px"   />
-                                                             <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }" method="POST">
-                                                                 <input type="hidden" th:value="${user}" style="margin: 2px" name="name" />
-                                                                 <input type="submit"  value="unfollow" style="margin: 2px" />
-                                                             </form>
-                                                         </div>
-
-                                                     </li>
-                                                 </ul>
-                                             </li>
-                                         </ul>
-                                     </div>
-                                     <div class="col-2" >
-                                         <ul class="nav">
-                                             <li class="nav-item dropdown">
-                                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">My followers</a>
-                                                 <ul class="dropdown-menu">
-                                                     <li th:each="user : ${followers}" >
-                                                         <div class="dropdown-item " href="#" style="display: flex; flex-direction: row"  >
-                                                             <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}" ></p>
-                                                             <input type="button"  value="view page" style="margin: 2px"   />
-
-                                                         </div>
-
-                                                     </li>
-                                                 </ul>
-                                             </li>
-                                         </ul>
-                                     </div>
-
-                                 </div>-->
 
 
         <div th:if="${owner == true}" class="row">
@@ -123,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <div  class="col-sm-4">
+            <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
                         <form style="display:flex; flex-direction: column;"
@@ -137,44 +77,44 @@
             </div>
             <div class="col-sm-4" style="display:flex; flex-direction: column; justify-content: space-around;">
 
-                        <ul class="nav">
-                            <li class=" dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                   aria-expanded="false">My friends</a>
-                                <ul class="dropdown-menu">
-                                    <li th:each="user : ${follow}">
-                                        <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                            <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
-                                            <input type="button" value="view page" style="margin: 2px"/>
-                                            <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
-                                                  method="POST">
-                                                <input type="hidden" th:value="${user}" style="margin: 2px"
-                                                       name="name"/>
-                                                <input type="submit" value="unfollow" style="margin: 2px"/>
-                                            </form>
-                                        </div>
+                <ul class="nav">
+                    <li class=" dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                           aria-expanded="false">My friends</a>
+                        <ul class="dropdown-menu">
+                            <li th:each="user : ${follow}">
+                                <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
+                                    <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
+                                    <input type="button" value="view page" style="margin: 2px"/>
+                                    <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
+                                          method="POST">
+                                        <input type="hidden" th:value="${user}" style="margin: 2px"
+                                               name="name"/>
+                                        <input type="submit" value="unfollow" style="margin: 2px"/>
+                                    </form>
+                                </div>
 
-                                    </li>
-                                </ul>
                             </li>
                         </ul>
-                        <ul class="nav">
-                            <li class="dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                   aria-expanded="false">My followers</a>
-                                <ul class="dropdown-menu">
-                                    <li th:each="user : ${followers}">
-                                        <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                            <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
-                                            <input type="button" value="view page" style="margin: 2px"/>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                           aria-expanded="false">My followers</a>
+                        <ul class="dropdown-menu">
+                            <li th:each="user : ${followers}">
+                                <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
+                                    <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
+                                    <input type="button" value="view page" style="margin: 2px"/>
 
-                                        </div>
+                                </div>
 
-                                    </li>
-                                </ul>
                             </li>
                         </ul>
-                    </div>
+                    </li>
+                </ul>
+            </div>
         </div>
 
 

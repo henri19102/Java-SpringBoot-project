@@ -1,106 +1,67 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Hello world</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <base href="/">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" >
-        <link rel="stylesheet" th:href="@{/public/styles.css}" >
-    </head>
-    <body  >
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello world</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <base href="/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/public/styles.css}">
+</head>
+<body>
 
-        <div class="container" >
-            <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
+<div class="container">
+    <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
 
 
-            <!--
-                        <div th:each="image : ${images}" >
-                            <p th:text="${image.id}" ></p>
-                            <img th:src="@{/images/{id}/content(id=${image.id})}"/>
-                        </div>
-                        <p th:text="${userId}" >joku</p>
-                    </div>-->
-
- <!--           <div class="row">
-                <div class="col-md-4"  style="background-color: blanchedalmond; border: solid black" >
-                    <div class="thumbnail">
-                        <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
-                            <div class="caption">
-                                <p th:text="${image.text}" >Lorem ipsum...</p>
-     
-
-                            </div>
-                    </div>
+    <div style="display: flex; justify-content: center; margin-top: 2%;">
+        <div class="card border-primary mb-3" style=" ">
+            <div class="row g-0">
+                <div class="card col-md-4">
+                    <img class="img-fluid rounded-start" th:src="@{/images/{id}/content(id=${image.id})}">
                 </div>
-                <div class="col-md-4"  style="background-color: blanchedalmond; border: solid black"  >
-                    <form th:if="${loggedIn != null}" th:action="@{/{username}/images/{id}/comment (username=${username}, id=${image.id})}" method="POST">
-                        <input  type="text"  name="comment" />
-                        <input type="submit"  value="add comment" />          
-                    </form>
+                <div class="col-md-8"  >
+                    <div class="card-body" >
+                        <form th:if="${loggedIn != null}"
+                              th:action="@{/{username}/images/{id}/comment (username=${username}, id=${image.id})}"
+                              method="POST">
+                            <input type="text" name="comment"/>
+                            <input type="submit" value="add comment"/>
+                        </form>
 
-                    <div th:if="${#lists.size(comments)>0}" th:each="com : ${comments}" class="card border-dark mb-3" style="max-width: 18rem;">
-                        <div th:text="${com.account.username}+':'" class="card-header">Header</div>
-                        <div class="card-body text-dark">
+                        <div th:if="${#lists.size(comments)>0}" th:each="com : ${comments}"
+                             class="card border-dark mb-3" >
+                            <div th:text="${com.account.username}+':'" class="card-header">Header</div>
+                            <div class="card-body text-dark">
 
-                            <p th:text="${com.text}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-
-
-
-                    <nav th:if="${size>3}" aria-label="Page navigation example">
-                        <ul class="pagination">
-
-                            <li th:each="i: ${#numbers.sequence(0, pages-1)}" class="page-item" th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}" >
-                                <a class="page-link" th:href="@{/{username}/images/{id}?page={i} (username = ${username}, id=${image.id}, i = ${i})}" th:text="${i+1}" >1</a>
-                            </li>
-
-                        </ul>
-                    </nav>
-                </div>
-
-            </div>-->
-<div style="display: flex; justify-content: center; margin-top: 2%;" >
-            <div class="card border-primary mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img class="img-fluid rounded-start" th:src="@{/images/{id}/content(id=${image.id})}" >
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <form th:if="${loggedIn != null}" th:action="@{/{username}/images/{id}/comment (username=${username}, id=${image.id})}" method="POST">
-                                <input  type="text"  name="comment" />
-                                <input type="submit"  value="add comment" />
-                            </form>
-
-                            <div th:if="${#lists.size(comments)>0}" th:each="com : ${comments}" class="card border-dark mb-3" style="max-width: 18rem;">
-                                <div th:text="${com.account.username}+':'" class="card-header">Header</div>
-                                <div class="card-body text-dark">
-
-                                    <p th:text="${com.text}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
+                                <p th:text="${com.text}" class="card-text">Some quick example text to build on the card
+                                    title and make up the bulk of the card's content.</p>
                             </div>
-
-
-
-                            <nav th:if="${size>3}" aria-label="Page navigation example">
-                                <ul class="pagination">
-
-                                    <li th:each="i: ${#numbers.sequence(0, pages-1)}" class="page-item" th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}" >
-                                        <a class="page-link" th:href="@{/{username}/images/{id}?page={i} (username = ${username}, id=${image.id}, i = ${i})}" th:text="${i+1}" >1</a>
-                                    </li>
-
-                                </ul>
-                            </nav>
                         </div>
+
+
+                        <nav th:if="${size>3}" aria-label="Page navigation example">
+                            <ul class="pagination">
+
+                                <li th:each="i: ${#numbers.sequence(0, pages-1)}" class="page-item"
+                                    th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}">
+                                    <a class="page-link"
+                                       th:href="@{/{username}/images/{id}?page={i} (username = ${username}, id=${image.id}, i = ${i})}"
+                                       th:text="${i+1}">1</a>
+                                </li>
+
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
-</div>
+        </div>
+    </div>
 
 
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+</body>
 </html>
