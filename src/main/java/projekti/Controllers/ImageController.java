@@ -62,7 +62,7 @@ public class ImageController {
         model.addAttribute("image", img);
         model.addAttribute("username", username);
         model.addAttribute("size", img.getComments().size());
-        model.addAttribute("pages", (int)Math.ceil(img.getComments().size()/3.0f));
+        model.addAttribute("pages", (int)Math.ceil(img.getComments().size()/10.0f));
         model.addAttribute("comments", img.getPagedComments(page) );
         model.addAttribute("loggedIn", accountService.getLoggedInUser());
 

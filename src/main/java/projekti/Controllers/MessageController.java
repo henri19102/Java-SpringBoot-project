@@ -69,7 +69,7 @@ public class MessageController {
         model.addAttribute("msg", msg);
         model.addAttribute("auth", accServ.getLoggedInUser());
         model.addAttribute("size", msg.getComments().size());
-        model.addAttribute("pages", (int) Math.ceil(msg.getComments().size() / 3.0f));
+        model.addAttribute("pages", (int) Math.ceil(msg.getComments().size() / 10.0f));
         model.addAttribute("comments", msg.getPagedComments(page));
         model.addAttribute("loggedIn", accServ.getLoggedInUser());
         return "message";

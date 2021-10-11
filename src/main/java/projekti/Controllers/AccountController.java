@@ -104,7 +104,7 @@ public class AccountController {
 
         model.addAttribute("account", account);
         model.addAttribute("messages", accServ.profilepagePagedMessages(account.getId(), page));
-        model.addAttribute("msgSize", (int)Math.ceil(accServ.profilepageMessagesSize(account.getId())/5.0f));
+        model.addAttribute("msgSize", (int)Math.ceil(accServ.profilepageMessagesSize(account.getId())/25.0f));
         model.addAttribute("profilePageName", profilePageName);
         model.addAttribute("username", account.getUsername());
         model.addAttribute("image", accServ.getProfilePic(account.getId()));

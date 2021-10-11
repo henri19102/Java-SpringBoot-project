@@ -50,8 +50,8 @@ public class Message implements Serializable {
     }
 
     public List<Comment> getPagedComments(int page) {
-        if (comments.size()>=3){
-            List<List<Comment>> smallerLists = Lists.partition(comments, 3);
+        if (comments.size()>=10){
+            List<List<Comment>> smallerLists = Lists.partition(comments, 10);
             return smallerLists.get(page);
         }
         return comments;

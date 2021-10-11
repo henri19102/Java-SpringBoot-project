@@ -41,7 +41,7 @@
                         </div>
 
 
-                        <nav th:if="${size>3}" aria-label="Page navigation example">
+                        <nav th:if="${size>10}" aria-label="Page navigation example">
                             <ul class="pagination">
 
                                 <li th:each="i: ${#numbers.sequence(0, pages-1)}" class="page-item"

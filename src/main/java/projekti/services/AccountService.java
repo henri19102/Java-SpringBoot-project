@@ -101,7 +101,7 @@ public class AccountService {
     }
 
     public List<Message> profilepagePagedMessages(Long id, int page) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("sendTime").descending());
+        Pageable pageable = PageRequest.of(page, 25, Sort.by("sendTime").descending());
         List<FollowUser> followedUsers = followRepo.findAllByFollowerId(id);
         List<Long> usersIds = new ArrayList<>();
         usersIds.add(id);
