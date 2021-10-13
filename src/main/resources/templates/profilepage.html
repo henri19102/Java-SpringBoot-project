@@ -16,7 +16,7 @@
 
     <div style="background-color: white;">
 
-        <div class="row" >
+        <div class="row">
             <div class="col-3" style="margin-top: 1%;">
                 <h1 th:text="${account.firstName}+' ' + ${account.lastName}"></h1>
             </div>
@@ -51,11 +51,11 @@
                               th:action="@{{profilePageName}/follow (profilePageName=${profilePageName}) }"
                               method="POST">
                             <input type="text" list="users" name="name"/>
-                            <div>
-                                <input type="submit" value="follow"/>
-                                <input type="submit" value="block"
+                            <div style="display: flex; justify-content: space-around; margin-top: 2%">
+                                <input class="btn btn-secondary" type="submit" value="follow"/>
+                                <input class="btn btn-secondary" type="submit" value="block"
                                        th:formaction="@{{profilePageName}/block (profilePageName=${profilePageName}) }"/>
-                                <input type="submit" value="unblock"
+                                <input class="btn btn-secondary" type="submit" value="unblock"
                                        th:formaction="@{{profilePageName}/unblock (profilePageName=${profilePageName}) }"/>
                             </div>
 
@@ -70,7 +70,10 @@
                               th:action="@{/{profilePageName}/message (profilePageName=${profilePageName}) }"
                               method="POST">
                             <textarea type="text" name="messagetext"></textarea>
-                            <input type="submit" value="add message"/>
+                            <div style="display: flex; justify-content: center; margin-top: 2%">
+                                <input class="btn btn-secondary" type="submit" value="add message"/>
+
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -124,36 +127,37 @@
 
 
         <div th:each="msg : ${messages}" class="card text-center" style="margin-top: 1%; margin-bottom: 1%">
-            <div class="card-header">
+            <div class="card-header" style="display:flex;justify-content:space-between;padding:0;">
                 <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}"></p>
+                <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}"></p>
+                <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
+                <div style="display:flex;" >
+                    <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}"
+                          th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
+                        <div class="form-check">
+                            <button type="submit" value="like" class="btn btn-primary btn-floating">
+                                <i type="submit" value="like" class="bi bi-hand-thumbs-up-fill"></i>
+
+                            </button>
+                        </div>
+                    </form>
+                    <form th:if="${loggedIn != null && #lists.contains(msg.getLikes(), loggedIn)}"
+                          th:action="@{/messages/{id}/unlike (id=${msg.id})}" method="POST">
+                        <div class="form-check">
+                            <button type="submit" value="unlike" class="btn btn-primary btn-floating">
+                                <i class="bi bi-hand-thumbs-down-fill"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p th:text="${'Likes: '+#lists.size(msg.likes)}"></p>
+                </div>
             </div>
             <div class="card-body" style="background-color: oldlace;">
                 <p th:text="${msg.text}" class="card-text"></p>
-                <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
-                <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}"
-                      th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
-                    <div class="form-check">
-                        <button type="submit" value="like" class="btn btn-primary btn-floating">
-                            <i type="submit" value="like" class="bi bi-hand-thumbs-up-fill"></i>
 
-                        </button>
-                    </div>
-                </form>
 
-                <form th:if="${loggedIn != null && #lists.contains(msg.getLikes(), loggedIn)}"
-                      th:action="@{/messages/{id}/unlike (id=${msg.id})}" method="POST">
-                    <div class="form-check">
-                        <button type="submit" value="unlike" class="btn btn-primary btn-floating">
-                            <i class="bi bi-hand-thumbs-down-fill"></i>
-                        </button>
-                    </div>
-                </form>
-
-                <p th:text="${#lists.size(msg.likes)}"></p>
             </div>
-            <div class="card-footer text-muted">
-                <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}"></p>
-            </div>
+
         </div>
 
     </div>
