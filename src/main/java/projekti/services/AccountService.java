@@ -59,7 +59,7 @@ public class AccountService {
         return false;
     }
 
-    public List<String> listFollowedUsers(Long id) {
+    public List<Account> listFollowedUsers(Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (accountRepo.findByUsername(auth.getName()) == null) {
             return null;
@@ -68,19 +68,19 @@ public class AccountService {
             return null;
         }
         List<FollowUser> followed = followRepo.findAllByFollowerId(id);
-        List<String> users = new ArrayList<>();
-        followed.stream().forEach(x -> users.add(x.getFollowedUser().getUsername()));
+        List<Account> users = new ArrayList<>();
+        followed.stream().forEach(x -> users.add(accountRepo.findByUsername(x.getFollowedUser().getUsername())));
         return users;
     }
 
-    public List<String> listFollowingUsers() {
+    public List<Account> listFollowingUsers() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (accountRepo.findByUsername(auth.getName()) == null) {
             return null;
         }
         List<FollowUser> followers = followRepo.findAllByFollowedUserId(accountRepo.findByUsername(auth.getName()).getId());
-        List<String> users = new ArrayList<>();
-        followers.stream().forEach(x -> users.add(x.getFollower().getUsername()));
+        List<Account> users = new ArrayList<>();
+        followers.stream().forEach(x -> users.add(accountRepo.findByUsername(x.getFollower().getUsername()) ));
         return users;
     }
 

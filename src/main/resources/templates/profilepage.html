@@ -37,17 +37,17 @@
                 <ul class="nav">
                     <li class=" dropdown">
                         <a class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                           aria-expanded="false">My friends</a>
+                           aria-expanded="false">Followed users</a>
                         <ul class="dropdown-menu">
                             <li th:each="user : ${follow}">
                                 <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                    <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
-                                    <input type="button" value="view page" style="margin: 2px"/>
+                                    <p th:text="${user.username}" style="margin: 2px" name="name" th:value="${user.username}"></p>
+                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}" class="btn btn-primary" style="margin: 2px" >View page</a>
                                     <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
                                           method="POST">
-                                        <input type="hidden" th:value="${user}" style="margin: 2px"
+                                        <input type="hidden" th:value="${user.username}" style="margin: 2px"
                                                name="name"/>
-                                        <input type="submit" value="unfollow" style="margin: 2px"/>
+                                        <input class="btn btn-danger" type="submit" value="unfollow" style="margin: 2px"/>
                                     </form>
                                 </div>
 
@@ -62,9 +62,8 @@
                         <ul class="dropdown-menu">
                             <li th:each="user : ${followers}">
                                 <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                    <p th:text="${user}" style="margin: 2px" name="name" th:value="${user}"></p>
-                                    <input type="button" value="view page" style="margin: 2px"/>
-
+                                    <p th:text="${user.username}" style="margin: 2px" name="name" th:value="${user.username}"></p>
+                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}" class="btn btn-primary" style="margin: 2px" >View page</a>
                                 </div>
 
                             </li>
