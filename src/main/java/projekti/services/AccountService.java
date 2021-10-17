@@ -3,6 +3,8 @@ package projekti.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +50,12 @@ public class AccountService {
         return accountRepo.findByUsername(auth.getName());
     }
 
+    public String joku() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return auth.getName();
+    }
+
     public boolean isOwner(Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (accountRepo.findByUsername(auth.getName()) == null) {
@@ -80,7 +88,7 @@ public class AccountService {
         }
         List<FollowUser> followers = followRepo.findAllByFollowedUserId(accountRepo.findByUsername(auth.getName()).getId());
         List<Account> users = new ArrayList<>();
-        followers.stream().forEach(x -> users.add(accountRepo.findByUsername(x.getFollower().getUsername()) ));
+        followers.stream().forEach(x -> users.add(accountRepo.findByUsername(x.getFollower().getUsername())));
         return users;
     }
 
@@ -179,9 +187,20 @@ public class AccountService {
         BlockRepo.deleteById(block.getId());
     }
 
-//    public String getProfilePageName() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        Account loggedInUser = accountRepo.findByUsername(auth.getName());
-//        return loggedInUser.getProfilePageName();
-//    }
+    public boolean followerOrOwner(String username) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (Objects.equals(auth.getName(), username)) {
+                return true;
+            }
+            Account follower = accountRepo.findByUsername(auth.getName());
+            Account followed = accountRepo.findByUsername(username);
+            if (followRepo.findByFollowerIdAndFollowedUserId(follower.getId(), followed.getId()) == null) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

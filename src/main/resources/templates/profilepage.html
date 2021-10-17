@@ -130,7 +130,7 @@
             <div class="card-header" style="display:flex;justify-content:space-around;padding:0;">
                 <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}"></p>
                 <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}"></p>
-                <a th:href="@{/{username}/messages/{id} (username=${username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
+                <a th:href="@{/{username}/messages/{id} (username=${msg.account.username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
                 <div style="display:flex;" >
                     <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}"
                           th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
