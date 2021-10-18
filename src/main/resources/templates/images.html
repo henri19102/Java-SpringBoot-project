@@ -21,80 +21,29 @@
             <input style="margin:1%" type="submit" value="Add!"/>
         </form>
     </div>
-    <!--
-                <div th:each="image : ${images}" >
-                    <p th:text="${image.id}" ></p>
-                    <img th:src="@{/images/{id}/content(id=${image.id})}"/>
-                </div>
-                <p th:text="${userId}" >joku</p>
-            </div>-->
 
     <div class="row" style="margin-top:1%">
         <div class="col-md-4" th:each="image : ${images}">
             <div class="thumbnail">
-
-                <!--
-                                    <img th:src="@{/images/{id}/content(id=${image.id})}" style="width:100%; border: solid black ">
-                                    <div class="caption">
-                                        <p th:text="${image.text}">Lorem ipsum...</p>
-                                        <p th:text="${#lists.size(image.likes)}">Lorem ipsum...</p>
-
-                                    </div>
-                                <a th:href="@{/{username}/images/{id} (username=${username}, id=${image.id})}">
-                                    <button class="btn btn-primary">
-                                        show comments
-                                    </button>
-                                </a>
-                                <form th:if="${loggedIn != null && !#lists.contains(image.getLikes(), loggedIn)}"
-                                      th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
-                                    <div class="form-check">
-                                        <input type="submit" value="like"/>
-                                    </div>
-                                </form>
-                                <form th:if="${loggedIn != null && #lists.contains(image.getLikes(), loggedIn)}"
-                                      th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}"
-                                      method="POST">
-                                    <div class="form-check">
-                                        <input type="submit" value="unlike"/>
-                                    </div>
-                                </form>
-                                <form th:if="${owner == true}"
-                                      th:action="@{/{username}/images/{id}/profile-picture (username=${username}, id=${image.id})}"
-                                      method="POST">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="profilepic" id="exampleRadios1"
-                                               th:value="${image.id}" th:checked="${image.profilePic} ? 'checked'">
-                                        <input type="submit" value="select profile picture"/>
-
-                                    </div>
-                                </form>
-                                <form th:if="${owner == true}"
-                                      th:action="@{/{username}/images/{id} (username=${username}, id=${image.id})}" method="POST">
-                                    <div class="form-check">
-                                        <input type="submit" value="delete"/>
-                                    </div>
-                                </form>-->
-
-
                 <div class="card border-primary mb-3">
                     <img th:src="@{/images/{id}/content(id=${image.id})}" style="border: solid gray ">
                     <div class="card-body">
-                        <div style="display:flex;justify-content:space-between;" >
+                        <div style="display:flex;justify-content:space-between;">
                             <h5 class="card-title">Image text:</h5>
                             <p th:text="${'Likes: '+#lists.size(image.likes)}"></p>
                         </div>
 
                         <p class="card-text" th:text="${image.text}">Lorem ipsum...</p>
-                        <div style="display:flex; justify-content:space-around;" >
+                        <div style="display:flex; justify-content:space-around;">
                             <a th:href="@{/{username}/images/{id} (username=${username}, id=${image.id})}">
                                 <button class="btn btn-primary">
                                     show comments
                                 </button>
                             </a>
 
-
                             <form th:if="${loggedIn != null && !#lists.contains(image.getLikes(), loggedIn)}"
-                                  th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}" method="POST">
+                                  th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}"
+                                  method="POST">
                                 <div class="form-check">
                                     <button type="submit" value="like" class="btn btn-primary btn-floating">
                                         <i type="submit" value="like" class="bi bi-hand-thumbs-up-fill"></i>
@@ -103,38 +52,14 @@
                                 </div>
                             </form>
                             <form th:if="${loggedIn != null && #lists.contains(image.getLikes(), loggedIn)}"
-                                  th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}" method="POST">
+                                  th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}"
+                                  method="POST">
                                 <div class="form-check">
                                     <button type="submit" value="unlike" class="btn btn-primary btn-floating">
                                         <i class="bi bi-hand-thumbs-down-fill"></i>
                                     </button>
                                 </div>
                             </form>
-
-
-
-   <!--                         <form th:if="${loggedIn != null && !#lists.contains(image.getLikes(), loggedIn)}"
-                                  th:action="@{/{username}/images/{id}/like (username=${username}, id=${image.id})}"
-                                  method="POST">
-                                <div class="form-check">
-
-                                    <button class="btn btn-success" type="submit">Like</button>
-                                </div>
-                            </form>
-
-                            <form th:if="${loggedIn != null && #lists.contains(image.getLikes(), loggedIn)}"
-                                  th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}"
-                                  method="POST">
-                                <div class="form-check">
-                                    <input type="submit" value="unlike"/>
-                                </div>
-                            </form>-->
-
-
-
-
-
-
 
                         </div>
                         <div style="display:flex;justify-content:space-around;">

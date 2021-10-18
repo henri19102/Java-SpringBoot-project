@@ -73,7 +73,6 @@ public class MessageController {
         model.addAttribute("comments", msg.getPagedComments(page));
         model.addAttribute("loggedIn", accServ.getLoggedInUser());
         model.addAttribute("followerOrOwner", accServ.followerOrOwner(username));
-        model.addAttribute("joku", accServ.joku());
 
 
         return "message";

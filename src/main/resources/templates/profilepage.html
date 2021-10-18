@@ -32,7 +32,8 @@
                     view image album
                 </a>
             </div>
-            <div th:if="${owner == true}" class="col-3" style="display:flex;flex-direction:column; justify-content: space-around;margin-top: 1%;">
+            <div th:if="${owner == true}" class="col-3"
+                 style="display:flex;flex-direction:column; justify-content: space-around;margin-top: 1%;">
 
                 <ul class="nav">
                     <li class=" dropdown">
@@ -41,13 +42,16 @@
                         <ul class="dropdown-menu">
                             <li th:each="user : ${follow}">
                                 <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                    <p th:text="${user.username}" style="margin: 2px" name="name" th:value="${user.username}"></p>
-                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}" class="btn btn-primary" style="margin: 2px" >View page</a>
+                                    <p th:text="${user.username}" style="margin: 2px" name="name"
+                                       th:value="${user.username}"></p>
+                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}"
+                                       class="btn btn-primary" style="margin: 2px">View page</a>
                                     <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
                                           method="POST">
                                         <input type="hidden" th:value="${user.username}" style="margin: 2px"
                                                name="name"/>
-                                        <input class="btn btn-danger" type="submit" value="unfollow" style="margin: 2px"/>
+                                        <input class="btn btn-danger" type="submit" value="unfollow"
+                                               style="margin: 2px"/>
                                     </form>
                                 </div>
 
@@ -62,8 +66,10 @@
                         <ul class="dropdown-menu">
                             <li th:each="user : ${followers}">
                                 <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                    <p th:text="${user.username}" style="margin: 2px" name="name" th:value="${user.username}"></p>
-                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}" class="btn btn-primary" style="margin: 2px" >View page</a>
+                                    <p th:text="${user.username}" style="margin: 2px" name="name"
+                                       th:value="${user.username}"></p>
+                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}"
+                                       class="btn btn-primary" style="margin: 2px">View page</a>
                                 </div>
 
                             </li>
@@ -130,8 +136,9 @@
             <div class="card-header" style="display:flex;justify-content:space-around;padding:0;">
                 <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}"></p>
                 <p th:text="${#temporals.format(msg.sendTime, 'dd.MM.yyyy HH:mm')}"></p>
-                <a th:href="@{/{username}/messages/{id} (username=${msg.account.username}, id=${msg.id})}" class="btn btn-primary">Comment</a>
-                <div style="display:flex;" >
+                <a th:href="@{/{username}/messages/{id} (username=${msg.account.username}, id=${msg.id})}"
+                   class="btn btn-primary">Comment</a>
+                <div style="display:flex;">
                     <form th:if="${loggedIn != null && !#lists.contains(msg.getLikes(), loggedIn)}"
                           th:action="@{/messages/{id}/like (id=${msg.id})}" method="POST">
                         <div class="form-check">

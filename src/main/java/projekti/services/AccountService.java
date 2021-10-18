@@ -42,37 +42,43 @@ public class AccountService {
     @Autowired
     BlockUserRepository BlockRepo;
 
-    public Account getLoggedInUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+    public String userLoggedIn() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth.getName() != null) {
+                return auth.getName();
+            }
+        } catch (Exception e) {
             return null;
         }
-        return accountRepo.findByUsername(auth.getName());
+        return null;
     }
 
-    public String joku() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public Account getLoggedInUser() {
 
-        return auth.getName();
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
+            return null;
+        }
+        return accountRepo.findByUsername(userLoggedIn());
     }
 
     public boolean isOwner(Long id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return false;
         }
-        if (accountRepo.findByUsername(auth.getName()).getId() == id) {
+        if (accountRepo.findByUsername(userLoggedIn()).getId() == id) {
             return true;
         }
         return false;
     }
 
     public List<Account> listFollowedUsers(Long id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return null;
         }
-        if (accountRepo.findByUsername(auth.getName()).getId() != id) {
+        if (accountRepo.findByUsername(userLoggedIn()).getId() != id) {
             return null;
         }
         List<FollowUser> followed = followRepo.findAllByFollowerId(id);
@@ -82,11 +88,11 @@ public class AccountService {
     }
 
     public List<Account> listFollowingUsers() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return null;
         }
-        List<FollowUser> followers = followRepo.findAllByFollowedUserId(accountRepo.findByUsername(auth.getName()).getId());
+        List<FollowUser> followers = followRepo.findAllByFollowedUserId(accountRepo.findByUsername(userLoggedIn()).getId());
         List<Account> users = new ArrayList<>();
         followers.stream().forEach(x -> users.add(accountRepo.findByUsername(x.getFollower().getUsername())));
         return users;
@@ -114,16 +120,11 @@ public class AccountService {
         List<Long> usersIds = new ArrayList<>();
         usersIds.add(id);
 
-        List<Message> messages = new ArrayList<>();
-        int msgSize = 0;
         if (followedUsers.size() > 0) {
             followedUsers.stream().forEach(user -> usersIds.add(user.getFollowedUser().getId()));
-            messages = msgRepo.findByAccountIdIn(usersIds, pageable);
+            return msgRepo.findByAccountIdIn(usersIds, pageable);
         }
-        if (followedUsers.isEmpty()) {
-            messages = msgRepo.findAllByAccountId(id, pageable);
-        }
-        return messages;
+        return msgRepo.findAllByAccountId(id, pageable);
     }
 
     public Image getProfilePic(Long id) {
@@ -134,11 +135,11 @@ public class AccountService {
     }
 
     public void follow(Account followedUser) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return;
         }
-        Account follower = accountRepo.findByUsername(auth.getName());
+        Account follower = accountRepo.findByUsername(userLoggedIn());
         if (follower == followedUser) {
             return;
         }
@@ -151,20 +152,20 @@ public class AccountService {
     }
 
     public void unFollow(Long followedUserId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return;
         }
-        FollowUser user = followRepo.findByFollowerIdAndFollowedUserId(accountRepo.findByUsername(auth.getName()).getId(), followedUserId);
+        FollowUser user = followRepo.findByFollowerIdAndFollowedUserId(accountRepo.findByUsername(userLoggedIn()).getId(), followedUserId);
         followRepo.deleteById(user.getId());
     }
 
     public void block(Account blockedUser) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return;
         }
-        Account blocker = accountRepo.findByUsername(auth.getName());
+        Account blocker = accountRepo.findByUsername(userLoggedIn());
         BlockUser block = new BlockUser(blocker, blockedUser);
         BlockRepo.save(block);
         if (followRepo.findByFollowerIdAndFollowedUserId(blocker.getId(), blockedUser.getId()) != null) {
@@ -178,27 +179,22 @@ public class AccountService {
     }
 
     public void unBlock(Account blockedUser) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (accountRepo.findByUsername(auth.getName()) == null) {
+
+        if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return;
         }
-        Account blocker = accountRepo.findByUsername(auth.getName());
+        Account blocker = accountRepo.findByUsername(userLoggedIn());
         BlockUser block = BlockRepo.findByBlockerIdAndBlockedUserId(blocker.getId(), blockedUser.getId());
         BlockRepo.deleteById(block.getId());
     }
 
     public boolean followerOrOwner(String username) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (Objects.equals(auth.getName(), username)) {
-                return true;
-            }
-            Account follower = accountRepo.findByUsername(auth.getName());
-            Account followed = accountRepo.findByUsername(username);
-            if (followRepo.findByFollowerIdAndFollowedUserId(follower.getId(), followed.getId()) == null) {
-                return false;
-            }
-        } catch (Exception e) {
+        if (Objects.equals(userLoggedIn(), username)) {
+            return true;
+        }
+        Account follower = accountRepo.findByUsername(userLoggedIn());
+        Account followed = accountRepo.findByUsername(username);
+        if (followRepo.findByFollowerIdAndFollowedUserId(follower.getId(), followed.getId()) == null) {
             return false;
         }
         return true;
