@@ -124,11 +124,4 @@ public class MessageController {
         return "redirect:/{username}/images";
     }
 
-//    @PostMapping("/{username}/message")
-//    public String saveMessage(@PathVariable String username, @RequestParam String messagetext) {
-//        Account user = userRepo.findByUsername(username);
-//        Message message = new Message(user, messagetext, LocalDateTime.now());
-//        messageRepo.save(message);
-//        return "redirect:/{username}/messages";
-//    }
 }

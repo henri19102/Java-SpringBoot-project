@@ -102,17 +102,22 @@ public class AccountController {
     public String profilePage(Model model, @PathVariable String profilePageName, @RequestParam(defaultValue = "0") Integer page) {
         Account account = accountRepository.findByProfilePageName(profilePageName);
 
-        model.addAttribute("account", account);
-        model.addAttribute("messages", accServ.profilepagePagedMessages(account.getId(), page));
-        model.addAttribute("msgSize", (int)Math.ceil(accServ.profilepageMessagesSize(account.getId())/25.0f));
-        model.addAttribute("profilePageName", profilePageName);
-        model.addAttribute("username", account.getUsername());
-        model.addAttribute("image", accServ.getProfilePic(account.getId()));
-        model.addAttribute("owner", accServ.isOwner(account.getId()));
-        model.addAttribute("follow", accServ.listFollowedUsers(account.getId()));
-        model.addAttribute("followers", accServ.listFollowingUsers());
-        model.addAttribute("users", accountRepository.findAll());
-        model.addAttribute("loggedIn", accServ.getLoggedInUser());
+        try {
+            model.addAttribute("account", account);
+            model.addAttribute("messages", accServ.profilepagePagedMessages(account.getId(), page));
+            model.addAttribute("msgSize", (int)Math.ceil(accServ.profilepageMessagesSize(account.getId())/25.0f));
+            model.addAttribute("profilePageName", profilePageName);
+            model.addAttribute("username", account.getUsername());
+            model.addAttribute("image", accServ.getProfilePic(account.getId()));
+            model.addAttribute("owner", accServ.isOwner(account.getId()));
+            model.addAttribute("follow", accServ.listFollowedUsers(account.getId()));
+            model.addAttribute("followers", accServ.listFollowingUsers());
+            model.addAttribute("users", accountRepository.findAll());
+            model.addAttribute("loggedIn", accServ.getLoggedInUser());
+        } catch (NullPointerException e){
+            System.out.println("NullPointerException thrown!");
+        }
+
 
         return "profilepage";
     }
