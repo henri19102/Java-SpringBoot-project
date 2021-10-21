@@ -49,7 +49,8 @@ public class Image implements Serializable {
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
 
-    @Type(type = "org.hibernate.type.ImageType")
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
 
