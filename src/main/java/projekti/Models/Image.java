@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 @Data
 @NoArgsConstructor
@@ -49,6 +50,7 @@ public class Image implements Serializable {
     private List<Comment> comments = new ArrayList<>();
 
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
 
