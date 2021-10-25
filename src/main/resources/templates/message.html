@@ -17,7 +17,7 @@
         <div class="card border-primary mb-3">
             <div class="row g-0">
                 <div class="card col-md-4" style="padding: 1%;">
-                    <h3 th:text="'Message by '+${msg.account.username}+':'"></h3>
+                    <h3 th:text="${msg.account.username}+'`s message:'"></h3>
                     <p th:text="${msg.text}">
                     <p th:text="${followerOrOwner}">
                     <p th:text="${joku}">
