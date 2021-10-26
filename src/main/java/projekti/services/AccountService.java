@@ -73,7 +73,8 @@ public class AccountService {
         return false;
     }
 
-    public List<Account> listFollowedUsers(Long id) {
+
+    public List<FollowUser> listFollowedUsers(Long id) {
 
         if (accountRepo.findByUsername(userLoggedIn()) == null) {
             return null;
@@ -82,9 +83,8 @@ public class AccountService {
             return null;
         }
         List<FollowUser> followed = followRepo.findAllByFollowerId(id);
-        List<Account> users = new ArrayList<>();
-        followed.stream().forEach(x -> users.add(accountRepo.findByUsername(x.getFollowedUser().getUsername())));
-        return users;
+
+        return followed;
     }
 
     public List<Account> listFollowingUsers() {

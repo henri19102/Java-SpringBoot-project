@@ -42,17 +42,18 @@
                            aria-expanded="false">Followed users</a>
                         <ul class="dropdown-menu">
                             <li th:each="user : ${follow}">
-                                <div class="dropdown-item " href="#" style="display: flex; flex-direction: row">
-                                    <p th:text="${user.username}" style="margin: 2px" name="name"
-                                       th:value="${user.username}"></p>
-                                    <a th:href="@{/{profilepage} (profilepage=${user.profilePageName})}"
-                                       class="btn btn-success" style="margin: 2px">View page</a>
-                                    <form th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
+                                <div class="dropdown-item " href="#" style="display: flex; flex-direction: row; justify-content:center;">
+                                    <p th:text="${user.followedUser.username}" style="margin: 1%; font-weight:bold;" name="name"
+                                       th:value="${user.followedUser.username}"></p>
+                                    <p style="font-style: italic; margin:1%;" th:text="'Started to follow: '+${#temporals.format(user.followStartTime, 'dd.MM.yyyy HH:mm')}" ></p>
+                                    <a style="margin-left:1%;" th:href="@{/{profilepage} (profilepage=${user.followedUser.profilePageName})}"
+                                       class="btn btn-success" >View page</a>
+                                    <form style="margin-left:1%;" th:action="@{{profilePageName}/unfollow (profilePageName=${profilePageName}) }"
                                           method="POST">
-                                        <input type="hidden" th:value="${user.username}" style="margin: 2px"
+                                        <input type="hidden" th:value="${user.followedUser.username}"
                                                name="name"/>
-                                        <input class="btn btn-danger" type="submit" value="unfollow"
-                                               style="margin: 2px"/>
+                                        <input style="margin-left:1%;" class="btn btn-danger" type="submit" value="unfollow"
+                                               />
                                     </form>
                                 </div>
 

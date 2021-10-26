@@ -20,14 +20,15 @@
             <div class="row g-0">
                 <div class="card col-md-4">
                     <img class="img-fluid rounded-start" th:src="@{/images/{id}/content(id=${image.id})}">
+                    <p th:text="${image.text}" ></p>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <form th:if="${followerOrOwner == true}"
+                        <form style="margin-bottom:2%" th:if="${followerOrOwner == true}"
                               th:action="@{/{username}/images/{id}/comment (username=${username}, id=${image.id})}"
                               method="POST">
                             <input type="text" name="comment"/>
-                            <input type="submit" value="add comment"/>
+                            <input class="btn btn-primary" type="submit" value="add comment"/>
                         </form>
 
                         <div th:if="${#lists.size(comments)>0}" th:each="com : ${comments}"
