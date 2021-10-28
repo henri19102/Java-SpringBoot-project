@@ -7,6 +7,8 @@ package projekti.Controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,8 @@ public class ImageController {
         model.addAttribute("username", username);
         model.addAttribute("owner", accountService.isOwner(user.getId()));
         model.addAttribute("loggedIn", accountService.getLoggedInUser());
+
+
         return "images";
     }
 
@@ -147,11 +151,11 @@ public class ImageController {
 
     @PostMapping("/{username}/images/{id}")
     public String deleteImage(@PathVariable String username, @PathVariable Long id) {
-        if (accountService.getLoggedInUser().getUsername() != username){
+        if (Objects.equals(accountService.userLoggedIn(), username)) {
+            imageRepo.deleteById(id);
             return "redirect:/{username}/images";
         }
-        imageRepo.deleteById(id);
-        return "redirect:/{username}/images";
+            return "redirect:/{username}/images";
     }
 
     @PostMapping("/{username}/images/{id}/profile-picture")

@@ -1,0 +1,38 @@
+body {
+padding:0;
+}
+
+.container {
+    padding: 0;
+}
+
+p{
+}
+
+.card{
+
+}
+
+.nav{
+    margin:1%;
+}
+.frontpage{
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%
+}
+.imagebox{
+display: flex; justify-content: center; margin-top: 2%;
+}
+.imageboxform{
+margin-bottom:2%
+}
+.images{
+width: 18rem; padding: 1%; margin: 1%
+}
+imageinput{
+margin:1%
+}
+imagetext{
+margin:1%
+}
