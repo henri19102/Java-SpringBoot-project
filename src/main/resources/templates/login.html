@@ -21,10 +21,6 @@
 
     <p></p>
 
-    <div th:if="${success}" class="alert alert-success" role="alert">
-        User logget out succesfully!
-    </div>
-
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -38,11 +34,8 @@
                 <div class="accordion-body">
 
                     <form method="POST" th:action="@{/login}">
-                        <div th:replace="fragments/alerts :: error"></div>
 
-                        <div th:if="${param.success}" class="alert alert-success" role="alert">
-                            User logged in!
-                        </div>
+
 
 
                         <div class="input-group mb-3">
