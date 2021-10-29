@@ -11,11 +11,9 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" style="background-color:white;">
     <div th:replace="fragments/navbar :: navbar(loggedIn=${loggedIn})"></div>
-
-
-    <div style="imagebox">
+    <div class="imagebox">
         <div class="card border-primary mb-3">
             <div class="row g-0">
                 <div class="card col-md-4">
@@ -39,18 +37,14 @@
                                 <p th:text="${com.text}" class="card-text"></p>
                             </div>
                         </div>
-
-
                         <nav th:if="${size>10}" aria-label="Page navigation example">
                             <ul class="pagination">
-
                                 <li th:each="i: ${#numbers.sequence(0, pages-1)}" class="page-item"
                                     th:classappend="${#strings.defaultString(#httpServletRequest.queryString, '') == 'page=' + {i} || i == 0 && #strings.defaultString(#httpServletRequest.queryString, '') == '' ? 'active' : ''}">
                                     <a class="page-link"
                                        th:href="@{/{username}/images/{id}?page={i} (username = ${username}, id=${image.id}, i = ${i})}"
                                        th:text="${i+1}">1</a>
                                 </li>
-
                             </ul>
                         </nav>
                     </div>

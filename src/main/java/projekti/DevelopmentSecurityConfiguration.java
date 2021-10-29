@@ -27,6 +27,7 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
             
             http.authorizeRequests()
             .antMatchers("/login").permitAll()
+            .antMatchers("/css", "/css/*").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()

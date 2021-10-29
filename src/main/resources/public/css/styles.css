@@ -1,25 +1,18 @@
 body {
-padding:0;
+    padding:0;
+    background-color:blue;
 }
-
 .container {
     padding: 0;
+    background-color:white;
 }
-
-p{
-}
-
-.card{
-
-}
-
 .nav{
-    margin:1%;
+margin:1%;
 }
 .frontpage{
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%
+margin-left: auto;
+margin-right: auto;
+width: 50%
 }
 .imagebox{
 display: flex; justify-content: center; margin-top: 2%;
@@ -27,12 +20,96 @@ display: flex; justify-content: center; margin-top: 2%;
 .imageboxform{
 margin-bottom:2%
 }
-.images{
-width: 18rem; padding: 1%; margin: 1%
+.imagestylings{
+width: 18rem; padding: 1%; margin: 1%;
 }
-imageinput{
+.imageinput{
 margin:1%
 }
-imagetext{
+.imagetext{
 margin:1%
+}
+.imagearea{
+margin-top:1%
+}
+.imageareaborder{
+border: solid gray
+}
+.imagedisplay{
+display:flex;justify-content:space-between;
+}
+.imgupperbuttons{
+display:flex; justify-content:space-around;
+}
+.imgbottombuttons{
+display:flex; justify-content:space-around;
+}
+.messagebox{
+display: flex; justify-content: center; margin-top: 2%;
+}
+.namearea{
+padding: 1%;
+}
+.commentarea{
+margin-bottom:2%
+}
+.profilearea{
+background-color: white;
+}
+.profilenamearea{
+margin-top: 1%
+}
+.imagestyle{
+vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;
+}
+.albumtext{
+font-size: large;
+}
+.followers{
+display:flex;flex-direction:column; justify-content: space-around;margin-top: 1%;
+}
+.followedusers{
+display: flex; flex-direction: row; justify-content:center;
+}
+.namebolded{
+margin: 1%; font-weight:bold;
+}
+.nameitalic{
+font-style: italic; margin:1%;
+}
+.marginleft{
+margin-left:1%;
+}
+.dropdownitem{
+display: flex; flex-direction: row;
+}
+.margintwo{
+margin: 2px;
+}
+.ownerarea{
+display:flex;justify-content:space-around;
+}
+.textcenter{
+text-align:center;
+}
+.searchbuttons{
+display: flex; justify-content: space-around; margin-top: 2%
+}
+.flexcolumn {
+display:flex; flex-direction: column;
+}
+.messagebutton{
+display: flex; justify-content: center; margin-top: 2%
+}
+.msgs{
+margin: 3% 5%;
+}
+.cardheader{
+display:flex;justify-content:space-around;padding:0;
+}
+.displayflex{
+display:flex;
+}
+.cardbackground{
+background-color: oldlace;
 }
