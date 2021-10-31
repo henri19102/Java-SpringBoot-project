@@ -133,7 +133,7 @@
 
 
         <h2 class="display-4 textcenter">Messages:</h2>
-        <p th:with="url=(${#strings.defaultString(#httpServletRequest.queryString, '')})" th:text="${url}"></p>
+        <p th:with="url=(${#strings.defaultString(#httpServletRequest.queryString, '')})" ></p>
         <div th:each="msg : ${messages}" class="card text-center msgs">
             <div class="card-header cardheader">
                 <p th:text="${msg.account.firstName} + ' ' + ${msg.account.lastName}"></p>
