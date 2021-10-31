@@ -13,7 +13,7 @@
     <div th:replace="fragments/navbar :: navbar(loggedIn = ${loggedIn})"></div>
     <h2>Log in or Sign up!</h2>
     <p></p>
-    <div th:if="${error}" class="alert alert-danger" role="alert" >
+    <div th:if="${param.error}" class="alert alert-danger" role="alert" >
         Wrong credentials!
     </div>
     <p></p>
