@@ -13,6 +13,10 @@
     <div th:replace="fragments/navbar :: navbar(loggedIn = ${loggedIn})"></div>
     <h2>Log in or Sign up!</h2>
     <p></p>
+    <div th:if="${error}" class="alert alert-danger" role="alert" >
+        Wrong credentials!
+    </div>
+    <p></p>
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
