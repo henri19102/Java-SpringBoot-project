@@ -109,7 +109,7 @@ public class MessageController {
         return "redirect:/{username}/images";
     }
 
-    @PostMapping("/{username}/messages/{id}/unlike")
+    @PostMapping("/{username}/messages/{id}/delete-like")
     public String unlike(@PathVariable String username, @PathVariable Long id) {
 
         Account account = accServ.getLoggedInUser();

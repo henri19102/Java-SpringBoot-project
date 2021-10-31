@@ -21,7 +21,7 @@ public class DefaultController {
     private AccountService serv;
 
     @GetMapping("*")
-    public String helloWorld(Model model) {
+    public String frontpage(Model model) {
         model.addAttribute("loggedIn", serv.getLoggedInUser());
         return "index";
     }

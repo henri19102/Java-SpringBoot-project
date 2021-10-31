@@ -53,8 +53,6 @@ public class ImageController {
         model.addAttribute("username", username);
         model.addAttribute("owner", accountService.isOwner(user.getId()));
         model.addAttribute("loggedIn", accountService.getLoggedInUser());
-
-
         return "images";
     }
 
@@ -136,8 +134,8 @@ public class ImageController {
         return "redirect:/{username}/images";
     }
 
-    @PostMapping("/{username}/images/{id}/unlike")
-    public String unlike(@PathVariable String username, @PathVariable Long id) {
+    @PostMapping("/{username}/images/{id}/delete-like")
+    public String deleteLike(@PathVariable String username, @PathVariable Long id) {
 
         Account account = accountService.getLoggedInUser();
         Image image = imageRepo.getOne(id);

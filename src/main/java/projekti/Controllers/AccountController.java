@@ -174,8 +174,8 @@ public class AccountController {
         return "redirect:"+ referer;
     }
 
-    @PostMapping("/messages/{id}/unlike")
-    public String unlike(@PathVariable Long id, HttpServletRequest request) {
+    @PostMapping("/messages/{id}/delete-like")
+    public String deleteLike(@PathVariable Long id, HttpServletRequest request) {
         String referer = request.getHeader("Referer");
 
         Account account = accServ.getLoggedInUser();

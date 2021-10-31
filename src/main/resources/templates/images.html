@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Hello world</title>
+    <title>Message app</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -48,10 +48,10 @@
                                 </div>
                             </form>
                             <form th:if="${loggedIn != null && #lists.contains(image.getLikes(), loggedIn)}"
-                                  th:action="@{/{username}/images/{id}/unlike (username=${username}, id=${image.id})}"
+                                  th:action="@{/{username}/images/{id}/delete-like (username=${username}, id=${image.id})}"
                                   method="POST">
                                 <div class="form-check">
-                                    <button type="submit" value="unlike" class="btn btn-primary btn-floating">
+                                    <button type="submit" value="deleteLike" class="btn btn-primary btn-floating">
                                         <i class="bi bi-hand-thumbs-down-fill"></i>
                                     </button>
                                 </div>
