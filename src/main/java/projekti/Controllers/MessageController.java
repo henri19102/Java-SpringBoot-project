@@ -120,7 +120,6 @@ public class MessageController {
             messageRepo.save(msg);
             return "redirect:/{username}/images";
         }
-
         return "redirect:/{username}/images";
     }
 
