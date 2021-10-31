@@ -102,10 +102,8 @@ public class MessageController {
         if (msg.getLikes().contains(account)) {
             return "redirect:/{username}/images";
         }
-
         msg.getLikes().add(account);
         messageRepo.save(msg);
-
         return "redirect:/{username}/images";
     }
 
